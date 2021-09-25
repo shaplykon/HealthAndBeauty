@@ -1,0 +1,72 @@
+﻿@model IQueryable<HealthAndBeauty.Models.FoodSet>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+    <link href="~/manifest.webmanifest" rel="manifest" />
+</head>
+
+<body>
+    <div class="jumbotron" style="margin-left:30px; margin-right:37px;">
+        <h1>Welcome!</h1>
+        <p class="lead">Visit our website and become healthier!</p>
+        <hr class="my-4">
+        <p>We offer you to read the latest news in the industry.</p>
+        <a asp-controller="Article" asp-action="ArticleIndex" class="btn btn-primary btn-lg" role="button">Learn more</a>
+
+    </div>
+
+    <div class="text-center">
+        <h1 class="display-4">@ViewBag.Response</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+
+    <div class="card-deck deck-index">
+        @foreach (FoodSet foodSet in ViewBag.FoodSets)
+        {
+            <div class="card w-25" style=" margin-left: 45px; margin-right: 45px; margin-bottom: 20px;">
+                <!-- <img class="card-img-top" style="max-height:190px" src="~/images/sneakers/.ImageData" /> -->
+                <div class="card-body" style=" position: relative;">
+
+                    <h4 class="card-title font-weight-bold" style="margin-top:10px;min-height:57.6px">
+                        12
+                        123
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted" style="margin-top:10px;">
+                        123
+                    </h6>
+                    <h4 class="card-text font-weight-bold" style="margin-top:10px;">
+                        123
+                    </h4>
+
+                    <!--if (User.IsInRole("admin") || User.IsInRole("manager"))
+                    {
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-sm-6">
+                                <form method="get" asp-controller="Sneakers" asp-action="SneakersEdit" asp-route-sneakersId="sneakers.Id">
+                                    <input type="hidden" value="neakers.Id" name="id" />
+                                    <input type="submit" class="btn btn-success" value="Edit" />
+                                </form>
+                            </div>
+                            <div class="col-sm-6">
+                                <form method="post" asp-controller="Sneakers" asp-action="SneakersDelete" asp-route-sneakersId="sneakers.Id">
+                                    <input type="hidden" value="sneakers.Id" name="id" />
+                                    <input type="submit" class="btn btn-danger" value="Delete" />
+                                </form>
+                            </div>
+                        </div>
+                    }-->
+
+                </div>
+                <div class="card-footer">
+                    <a class="card-link" asp-controller="Sneakers" asp-action="SneakersDetail">Detail</a>
+                </div>
+
+            </div>
+        }
+        </div>
+</body>
+
+
+
