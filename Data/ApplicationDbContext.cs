@@ -1,4 +1,5 @@
 ﻿using HealthAndBeauty.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,6 +33,25 @@ namespace HealthAndBeauty.Data
                     Latitude = 37.77,
                     Longtitude = -122.41,
                     Description = "San Francisco"
+                });
+            ModelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "2",
+                    Name = "manager",
+                    NormalizedName = "MANAGER"
+                },
+                new IdentityRole
+                {
+                    Id = "3",
+                    Name = "user",
+                    NormalizedName = "USER"
                 });
         }
     }

@@ -3,15 +3,17 @@ using System;
 using HealthAndBeauty.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HealthAndBeauty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210926113311_add_user_role")]
+    partial class add_user_role
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,23 +112,23 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "6ebbe944-06a6-41d4-be54-780dd0366afa",
+                            ConcurrencyStamp = "9aefb52f-e139-4628-a8b9-a68c7e8c8c75",
                             Name = "admin",
-                            NormalizedName = "ADMIN"
+                            NormalizedName = "Administrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "2099b946-5cd7-4f0f-82c6-ba73487ac4f0",
+                            ConcurrencyStamp = "b2a52cc2-368e-4fbc-bce0-26bb464c12ca",
                             Name = "manager",
-                            NormalizedName = "MANAGER"
+                            NormalizedName = "Manager"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "43c859f5-bb3c-42dc-8a0e-205b0e592577",
+                            ConcurrencyStamp = "c9bfefa5-d59e-4c89-94ab-cdde19650693",
                             Name = "user",
-                            NormalizedName = "USER"
+                            NormalizedName = "User"
                         });
                 });
 

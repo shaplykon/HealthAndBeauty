@@ -3,15 +3,17 @@ using System;
 using HealthAndBeauty.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HealthAndBeauty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210926112249_user_roles_added")]
+    partial class user_roles_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,23 +112,16 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "6ebbe944-06a6-41d4-be54-780dd0366afa",
+                            ConcurrencyStamp = "0cd99832-ddd2-4033-94b9-ad583d630767",
                             Name = "admin",
-                            NormalizedName = "ADMIN"
+                            NormalizedName = "Administrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "2099b946-5cd7-4f0f-82c6-ba73487ac4f0",
+                            ConcurrencyStamp = "0f54f3e5-ee5f-44fb-ac5c-6655e7e57a60",
                             Name = "manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "3",
-                            ConcurrencyStamp = "43c859f5-bb3c-42dc-8a0e-205b0e592577",
-                            Name = "user",
-                            NormalizedName = "USER"
+                            NormalizedName = "Manager"
                         });
                 });
 

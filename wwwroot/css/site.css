@@ -84,3 +84,19 @@ body {
     line-height: 1.2;
     margin-top: 10px;
 }
+
+.text-important{
+    color:darkorange !important;
+}
+
+.text-important:hover {
+    color: chocolate !important;
+}
+
+.text-info{
+    color:limegreen !important;
+}
+
+.text-info:hover{
+    color:green !important;
+}
