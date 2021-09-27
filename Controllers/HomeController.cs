@@ -32,7 +32,7 @@ namespace HealthAndBeauty.Controllers
 
         public async Task<ActionResult> Index()
         {
-
+            /*
             string WEBSERVICE_URL = "https://trackapi.nutritionix.com/v2/natural/nutrients";
             Foods foodsArray = null;
             string product = "egg";
@@ -45,14 +45,16 @@ namespace HealthAndBeauty.Controllers
                     .PostJsonAsync(new { query = product }).ReceiveJson<Foods>();
             }
 
-            /* FoodApi.GetProductCalirific("egg"); */ 
+            /* FoodApi.GetProductCalirific("egg"); 
 
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
             ViewBag.Response = string.Format($"{product} calorific: {foodsArray.info[0].Calorific}");
+            */
+
             ViewBag.FoodSets = _foodSetsRepository.GetFoodSets();
 
             return View();

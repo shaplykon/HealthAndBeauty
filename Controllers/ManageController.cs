@@ -14,7 +14,7 @@ namespace HealthAndBeauty.Controllers
             userManager = _userManager;
         }
 
-        //[Microsoft.AspNetCore.Authorization.Authorize(Roles = "admin, manager")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "admin, manager")]
         [HttpGet]
         public IActionResult Index()
         {

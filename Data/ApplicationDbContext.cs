@@ -9,7 +9,7 @@ namespace HealthAndBeauty.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<FoodSet> FoodSets { get; set; }
-        public DbSet<MapsCoordinates> MapsCoordinates { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -25,15 +25,24 @@ namespace HealthAndBeauty.Data
                 new FoodSet { Id = 2 }
             });
 
-            ModelBuilder.Entity<MapsCoordinates>().HasData(
-                new MapsCoordinates
+            ModelBuilder.Entity<Address>().HasData(
+                new Address
                 {
                     Id = 1,
-                    AddressName = "SF",
-                    Latitude = 37.77,
-                    Longtitude = -122.41,
-                    Description = "San Francisco"
-                });
+                    AddressName = "9 Gikalo str., Minsk, Belarus",
+                    Latitude = 53.912254769620034,
+                    Longtitude = 27.594474988468278,
+                    Description = "Minsk"
+                },
+                new Address
+                {
+                    Id = 2,
+                    AddressName = "65 Nezavisimosti Ave., Minsk",
+                    Latitude = 53.92107236295033,
+                    Longtitude = 27.592836631586675,
+                    Description = "Minsk"
+                }
+                );
             ModelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {

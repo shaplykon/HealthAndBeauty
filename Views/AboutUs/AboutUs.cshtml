@@ -1,96 +1,58 @@
 ﻿@{
     ViewBag.Title = "About Us";
 }
+<head>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJMF3gVJD6f6ue_2lLeBODZIfgOI2B3os"></script>
+    <script src="~/js/maps-scripts/map-display.js"></script>
+</head>
 <body>
-    <div id="MapDiv" style="width: 500px; height: 500px">
-    </div>
+    <div class="about-us-container">
+        <div class="about-us-block">
+            <h2>
+                Careers
+            </h2>
+            <article>
+                HealthAndBeauty is a fast-growing company and we are always looking for motivated, multi-talented, and organized people to join our team. To learn more, please see the HealthAndBeauty page.
 
-    @section scripts{
+            </article>
+        </div>
 
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJMF3gVJD6f6ue_2lLeBODZIfgOI2B3os"></script>
-        <script type="text/javascript">
- 
-            $.ajax({
-                url: '/AboutUs/GetMapMarker',
-                type: 'GET',
-                success: function (data) {
-                    //create a blank array
-                    var markers = [];
+        <div class="about-us-block">
+            <h2>
+                Contact Us
+            </h2>
+            <article>
+                <p>Whether you have a comment or suggestion to share, we look forward to hearing from you. Feel free to reach out by visiting our <a asp-controller="" asp-action="">Contact Us </a> page.</p>
+            </article>
+        </div>
 
-                    //loop the list of addresses returned from Ajax request
-                    $.each(data, function (index, item) {
-                        //create a blank array of address
-                        var marker = {};
+        <div class="about-us-block">
+            <h2>
+                Our locations
+            </h2>
 
-                        //fill data
-                        marker["title"] = item.addressName;
-                        marker["lat"] = item.latitude;
-                        marker["lng"] = item.longtitude;
-                        marker["description"] = item.description;
+            <article>
+                Our primary offices are in 
+                <ul>
+                    @{foreach (string address in ViewBag.Addresses)
+                        {
+                            <li>
+                                @address
+                            </li>
+                        }
+                    }
+                </ul>         
+            </article>
 
-                        //push the current marker details in markers array
-                        markers.push(marker);
-                    })
-
-                    //call Map function with all markers passed as list of arrays
-                    initializeMap(markers);
-
-                }
-            });
-
-
-            function initializeMap(markers) {
-                //you can check your marker data in console
-                console.log(markers);
-                //Create Google map options
-                var GoogleMapOptions = {
-                    center: new google.maps.LatLng(+markers[0].lat, +markers[0].lng),
-                    zoom: 6,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-
-
-                //create a variable of InfoWindow type to show data on clicking map icon
-                var infoWindow = new google.maps.InfoWindow();
-                var map = new google.maps.Map(document.getElementById("MapDiv"), GoogleMapOptions);
-
-
-                //loop through each marker data
-                for (i = 0; i < markers.length; i++) {
-                    var data = markers[i]
-                    //set lat long of current marker
-                    var myLatlng = new google.maps.LatLng(+data.lat, +data.lng);
-
-                    var marker = new google.maps.Marker({
-                        position: myLatlng,
-                        map: map,
-                        title: data.title
-                    });
-
-                    (function (marker, data) {
-                        // add a on marker click event
-                        google.maps.event.addListener(marker, "click", function (e) {
-                            //show description
-                            infoWindow.setContent(data.description);
-                            infoWindow.open(map, marker);
-                        });
-                    })(marker, data);
-                }
-
-                map.addListener('click', function (e) {
-                    placeMarker(e.latLng, map);
-                });
-
-                function placeMarker(position, map) {
-                    var marker = new google.maps.Marker({
-                        position: position,
-                        map: map
-                    });
-                    map.panTo(position);
-                }
-
+            @if(User.IsInRole("manager") || User.IsInRole("admin"))
+            {
+                <a style="map-edit-link" asp-controller="AboutUs" asp-action="EditLocations">Edit locations</a>
             }
 
-        </script>
-    }
+        </div>
+    </div>
+
+    <div id="MapDiv" class="map-container"> </div>
+
 </body>

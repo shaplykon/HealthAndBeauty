@@ -85,6 +85,7 @@ body {
     margin-top: 10px;
 }
 
+/* HEADER LINKS */
 .text-important{
     color:darkorange !important;
 }
@@ -99,4 +100,48 @@ body {
 
 .text-info:hover{
     color:green !important;
+}
+/*-----------------*/
+
+/* MAP CONTAINER*/
+.map-container {
+    width: 500px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.map-edit-link{
+    margin: 0 auto;
+}
+
+/*-----------------*/
+
+/* ABOUT US BLOCK*/
+.about-us-container {
+    width: 700px;
+    margin: 0 auto;
+}
+
+.about-us-block {
+    margin: 20px 0;
+
+}
+
+.about-us-block a {
+    letter-spacing: normal;
+    transition-duration: 0.5s;
+}
+
+
+.about-us-block a:hover{
+    letter-spacing:1px;
+    transition-duration:0.5s;
+    text-decoration:none;
+}
+/*-----------------*/
+
+.delete-link{
+    color:red !important;
+    margin: 0 10px;
 }

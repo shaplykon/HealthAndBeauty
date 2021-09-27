@@ -14,9 +14,27 @@ namespace HealthAndBeauty.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public List<MapsCoordinates> GetCoordinates()
+        public List<Address> GetCoordinates()
         {
-            return _dbContext.MapsCoordinates.ToList();
+            return _dbContext.Addresses.ToList();
+        }
+
+        public List<string> GetAddresses()
+        {
+            return _dbContext.Addresses.Select(address=>address.AddressName).ToList();
+        }
+
+        internal void DeleteAddress(int id)
+        {
+            _dbContext.Addresses.Remove(_dbContext.Addresses.Where(address => address.Id == id).SingleOrDefault());
+            _dbContext.SaveChanges();
+        }
+
+        internal void AddAddress(Address address)
+        {
+            _dbContext.Addresses.Add(address);
+            _dbContext.SaveChanges();
+
         }
     }
 }

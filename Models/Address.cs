@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HealthAndBeauty.Models
 {
     [Table("google_maps")]
-    public class MapsCoordinates
+    public class Address
     {   
         [Column("Id")]
         public int Id { get; set; }
