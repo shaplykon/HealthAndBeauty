@@ -4,7 +4,6 @@ using HealthAndBeauty.Models;
 using HealthAndBeauty.Models.JsonApiModels;
 using HealthAndBeauty.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -89,7 +88,7 @@ namespace HealthAndBeauty.Controllers
                 Console.WriteLine(e.Message);
             }
 
-            return addressArray.AddressResults.FirstOrDefault()?.FormattedAddress;//addressArray.AddressResults.Le addressArray.AddressResults.First().; 
+            return addressArray.AddressResults.FirstOrDefault()?.FormattedAddress;
         }
     }
 }

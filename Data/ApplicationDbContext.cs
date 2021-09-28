@@ -10,6 +10,7 @@ namespace HealthAndBeauty.Data
     {
         public DbSet<FoodSet> FoodSets { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -18,31 +19,10 @@ namespace HealthAndBeauty.Data
         {
             base.OnModelCreating(ModelBuilder);
 
-            ModelBuilder.Entity<FoodSet>().HasData(
-            new FoodSet[]
-            {
-                new FoodSet { Id = 1 },
-                new FoodSet { Id = 2 }
-            });
+            //ModelBuilder.Entity<Ingredient>().HasOne(c => c.FoodSet).WithMany(c => c.Ingredients).IsRequired(true);
 
-            ModelBuilder.Entity<Address>().HasData(
-                new Address
-                {
-                    Id = 1,
-                    AddressName = "9 Gikalo str., Minsk, Belarus",
-                    Latitude = 53.912254769620034,
-                    Longtitude = 27.594474988468278,
-                    Description = "Minsk"
-                },
-                new Address
-                {
-                    Id = 2,
-                    AddressName = "65 Nezavisimosti Ave., Minsk",
-                    Latitude = 53.92107236295033,
-                    Longtitude = 27.592836631586675,
-                    Description = "Minsk"
-                }
-                );
+            ModelBuilder.Entity<FoodSet>().HasMany(c => c.Ingredients).WithOne(c => c.FoodSet).IsRequired(true);
+
             ModelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {

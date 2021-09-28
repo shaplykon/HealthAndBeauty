@@ -5,6 +5,7 @@
 }
 <head>
     <link href="~/manifest.webmanifest" rel="manifest" />
+    <link rel="stylesheet" href="~/css/product_card/product_card.css" />
 </head>
 
 <body>
@@ -25,47 +26,50 @@
     <div class="card-deck deck-index">
         @foreach (FoodSet foodSet in ViewBag.FoodSets)
         {
-            <div class="card w-25" style=" margin-left: 45px; margin-right: 45px; margin-bottom: 20px;">
-                <!-- <img class="card-img-top" style="max-height:190px" src="~/images/sneakers/.ImageData" /> -->
-                <div class="card-body" style=" position: relative;">
-
-                    <h4 class="card-title font-weight-bold" style="margin-top:10px;min-height:57.6px">
-                        12
-                        123
-                    </h4>
-                    <h6 class="card-subtitle mb-2 text-muted" style="margin-top:10px;">
-                        123
-                    </h6>
-                    <h4 class="card-text font-weight-bold" style="margin-top:10px;">
-                        123
-                    </h4>
-
-                    <!--if (User.IsInRole("admin") || User.IsInRole("manager"))
-                    {
-                        <div class="row" style="margin-top:10px;">
-                            <div class="col-sm-6">
-                                <form method="get" asp-controller="Sneakers" asp-action="SneakersEdit" asp-route-sneakersId="sneakers.Id">
-                                    <input type="hidden" value="neakers.Id" name="id" />
-                                    <input type="submit" class="btn btn-success" value="Edit" />
-                                </form>
-                            </div>
-                            <div class="col-sm-6">
-                                <form method="post" asp-controller="Sneakers" asp-action="SneakersDelete" asp-route-sneakersId="sneakers.Id">
-                                    <input type="hidden" value="sneakers.Id" name="id" />
-                                    <input type="submit" class="btn btn-danger" value="Delete" />
-                                </form>
-                            </div>
+            <div class="product-card">
+                <div class="card-image">
+                    <div class="card-image-container">
+                        <picture>
+                            <source srcset="https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=380&amp;h=180, https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=760&amp;h=360 2x">
+                            <img src="https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=380&amp;h=180">
+                        </picture>
+                    </div>
+                    <div class="time-info-block">
+                        <div class="time-info-block-content">
+                            <span>50 мин</span>
                         </div>
-                    }-->
-
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a class="card-link" asp-controller="Sneakers" asp-action="SneakersDetail">Detail</a>
-                </div>
+                <div class="info-block">
+                    <div class="name-block">
+                        @foodSet.Name
+                    </div>
+                    @foreach (Ingredient ingredient in foodSet.Ingredients)
+                    {
+                        <div class="description-block">@ingredient.Name</div>
+                    }
 
+                    <div class="card-footer">
+                        <div class="rating-block st">
+                            <span class="rating-block-content">
+                                4.4
+                            </span>
+                        </div>
+                        <div class="price-block">
+                            $$
+                        </div>
+                        <div class="delivery-info">
+                            <span>
+                                Доставка от 0 руб
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
         }
-        </div>
+    </div>
 </body>
 
 

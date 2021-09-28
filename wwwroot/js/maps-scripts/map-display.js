@@ -34,8 +34,8 @@ function initializeMap(markers) {
     console.log(markers);
     //Create Google map options
     var GoogleMapOptions = {
-        center: new google.maps.LatLng(+markers[0].lat, +markers[0].lng),
-        zoom: 14,
+        center: new google.maps.LatLng(53.9024716, 27.5618225),
+        zoom: 11,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 

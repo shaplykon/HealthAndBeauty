@@ -13,6 +13,7 @@ namespace HealthAndBeauty.Services
         {
             services.AddScoped<FoodSetsRepository>();
             services.AddScoped<GoogleMapsRepository>();
+            services.AddScoped<FoodSetsRepository>();
         }
     }
 }

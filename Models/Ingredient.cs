@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace HealthAndBeauty.Models
 {
-    [Table("products")]
-    public class FoodSet
+    [Table("ingredients")]
+    public class Ingredient
     {
         [Column("Id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Column("name")]
         public string Name { get; set; }
-        [Column("description")]
-        public string Description { get; set; }
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public FoodSet FoodSet { get; set; }
     }
 }

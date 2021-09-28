@@ -19,30 +19,7 @@ namespace HealthAndBeauty.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("HealthAndBeauty.Models.FoodSet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("Id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("food_set");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1
-                        },
-                        new
-                        {
-                            Id = 2
-                        });
-                });
-
-            modelBuilder.Entity("HealthAndBeauty.Models.MapsCoordinates", b =>
+            modelBuilder.Entity("HealthAndBeauty.Models.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,24 +46,49 @@ namespace HealthAndBeauty.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("google_maps");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AddressName = "9 Gikalo str., Minsk, Belarus",
-                            Description = "Minsk",
-                            Latitude = 53.912254769620034,
-                            Longtitude = 27.594474988468278
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AddressName = "65 Nezavisimosti Ave., Minsk",
-                            Description = "Minsk",
-                            Latitude = 53.921072362950333,
-                            Longtitude = 27.592836631586675
-                        });
+            modelBuilder.Entity("HealthAndBeauty.Models.FoodSet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("products");
+                });
+
+            modelBuilder.Entity("HealthAndBeauty.Models.Ingredient", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("FoodSetId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodSetId");
+
+                    b.ToTable("ingredients");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -118,21 +120,21 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "52618289-c979-4e8c-9790-4164db554236",
+                            ConcurrencyStamp = "53ec31de-2ad6-4ff9-b7d4-36ae90087e52",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "e28ef028-33f5-47f3-a65e-88677b4964b6",
+                            ConcurrencyStamp = "f457a75d-bed9-4f78-ad12-89bb27a83891",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "454e22d2-4fd8-4169-836c-32a39825c575",
+                            ConcurrencyStamp = "9f1c6d57-bf8a-4c7a-8bc1-6a74436370cd",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -310,6 +312,17 @@ namespace HealthAndBeauty.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("HealthAndBeauty.Models.Ingredient", b =>
+                {
+                    b.HasOne("HealthAndBeauty.Models.FoodSet", "FoodSet")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("FoodSetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodSet");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -359,6 +372,11 @@ namespace HealthAndBeauty.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HealthAndBeauty.Models.FoodSet", b =>
+                {
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,7 +22,6 @@ namespace HealthAndBeauty.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private FoodSetsRepository _foodSetsRepository;
-            
 
         public HomeController(ILogger<HomeController> logger, FoodSetsRepository foodSetsRepository)
         {
@@ -55,7 +54,7 @@ namespace HealthAndBeauty.Controllers
             ViewBag.Response = string.Format($"{product} calorific: {foodsArray.info[0].Calorific}");
             */
 
-            ViewBag.FoodSets = _foodSetsRepository.GetFoodSets();
+            ViewBag.FoodSets = _foodSetsRepository.GetFoodSetsList();
 
             return View();
         }

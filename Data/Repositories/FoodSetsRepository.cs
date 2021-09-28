@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace HealthAndBeauty.Data.Repositories
 {
@@ -15,9 +16,22 @@ namespace HealthAndBeauty.Data.Repositories
             context = _context;
         }
 
-        public List<FoodSet> GetFoodSets()
+        public List<FoodSet> GetFoodSetsList()
         {
-            return context.FoodSets.ToList();
+            List<FoodSet> foodSets = context.FoodSets.ToList();
+
+            foreach(FoodSet foodSet in foodSets)
+            {
+                foodSet.Ingredients = context.Ingredients.Where(ingredient => ingredient.FoodSet.Id == foodSet.Id).ToList();
+            }
+            return foodSets;
         }
+
+        public void AddFoodSet(FoodSet foodSet)
+        {
+            context.FoodSets.Add(foodSet);
+            context.SaveChanges();
+        }
+
     }
 }
