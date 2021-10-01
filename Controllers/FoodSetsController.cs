@@ -1,6 +1,7 @@
 ﻿using HealthAndBeauty.Data.Repositories;
 using HealthAndBeauty.Models;
 using HealthAndBeauty.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,22 @@ namespace HealthAndBeauty.Controllers
     public class FoodSetsController : Controller
     {
         private FoodSetsRepository _foodSetsRepository;
-        public FoodSetsController(FoodSetsRepository foodSetsRepository)
+        UserManager<IdentityUser> userManager;
+        public FoodSetsController(FoodSetsRepository foodSetsRepository, UserManager<IdentityUser> _userManager)
         {
             _foodSetsRepository = foodSetsRepository;
+            userManager = _userManager;
         }
 
         [HttpGet]
         public IActionResult Edit()
         {
-            ViewBag.FoodSet = new FoodSet { Ingredients = new List<Ingredient>{ new Ingredient(), new Ingredient() }};
+            var ingredientsList = new List<Ingredient>();
+            for(int i = 0; i < 5; i++)
+            {
+                ingredientsList.Add(new Ingredient());
+            }
+            ViewBag.FoodSet = new FoodSet { Ingredients = ingredientsList };
 
             return View();
         }
@@ -38,6 +46,56 @@ namespace HealthAndBeauty.Controllers
             return RedirectToAction("Edit");
         }
 
+        [HttpGet]
+        public IActionResult Detail(int Id)
+        {
+            FoodSet sneakers;
+            sneakers = _foodSetsRepository.GetFoodSetsById(Id);
+            ViewBag.FoodSet = sneakers;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                if (_foodSetsRepository.IsInShoppingCart(Guid.Parse(userManager.GetUserId(HttpContext.User)), Id))
+                {
+                    ViewBag.isInCart = true;
+                }
+
+                else
+                {
+                    ViewBag.isInCart = false;
+                }
+            }
+            else
+            {
+                ViewBag.isInCart = false;
+            }
+
+            return View();
+        }
+
+       /* [Microsoft.AspNetCore.Authorization.Authorize]
+        [HttpPost]
+        public IActionResult AddToShoppingCart(int foodSetId)
+        {
+            Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+            if (purchaseRepository.IsInPurchases(userId, sneakersId))
+            {
+                purchaseRepository.DeletePurchaseById(userId, sneakersId);
+            }
+            else
+            {
+                purchaseRepository.SavePurchase(
+                new Purchase
+                {
+                    PurchaseId = 0,
+                    UserId = userId,
+                    SneakersId = sneakersId,
+                    Date = DateTime.Now,
+
+                });
+            }
+            return RedirectToAction("SneakersDetail", "Sneakers", new { Id = sneakersId });
+        }*/
 
     }
 }

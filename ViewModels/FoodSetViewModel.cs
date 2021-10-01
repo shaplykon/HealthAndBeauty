@@ -35,7 +35,8 @@ namespace HealthAndBeauty.ViewModels
                 foodSet.Ingredients = new List<Ingredient>();
                 foreach(Ingredient ingredient in viewModel.Ingredients)
                 {
-                    foodSet.Ingredients.Add(ingredient);
+                    if(ingredient != null)
+                        foodSet.Ingredients.Add(ingredient);
                 }
             }
 

@@ -33,5 +33,18 @@ namespace HealthAndBeauty.Data.Repositories
             context.SaveChanges();
         }
 
+        internal FoodSet GetFoodSetsById(int id)
+        {
+            var foodSet = context.FoodSets.Where(set => set.Id == id).FirstOrDefault();
+            foodSet.Ingredients = context.Ingredients.Where(ingredient => ingredient.FoodSet.Id == id).ToList();
+            return foodSet;
+        }
+
+        internal bool IsInShoppingCart(Guid guid, int id)
+        {
+            IQueryable<ShoppingCart> shoppingCartItem = context.ShoppingCarts.Where(x => x.FoodSetId == id && x.UserId == guid);
+            if (shoppingCartItem.Count() == 0) return false;
+            else return true;
+        }
     }
 }

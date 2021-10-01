@@ -1,0 +1,34 @@
+﻿@model HealthAndBeauty.Models.FoodSet
+@{
+    ViewData["Title"] = "//"; //ViewBag.sneakers.Company + ViewBag.sneakers.Model;
+}
+
+<div class="row">
+
+    <div class="col"><h1>@ViewBag.FoodSet.Name</h1></div>
+
+    <div class="col">
+        @{if (User.IsInRole("user") || !User.Identity.IsAuthenticated)
+            {
+                @if (ViewBag.isInCart)
+                {
+                    <form method="post" asp-controller="FoodSet" asp-action="AddToShoppingCart" asp-route-id="@ViewBag.FoodSet.Id">
+                        <input type="hidden" value="@ViewBag.FoodSet.Id" name="Id" />
+                        <input asp-route-foodSetId="@ViewBag.FoodSet.Id" class="btn btn-danger right" type="submit" asp-controller="FoodSet" asp-action="AddToShoppingCart" value="Delete from shopping cart">
+                    </form>
+                }
+                else
+                {
+                    <form method="post" asp-controller="FoodSet" asp-action="AddToShoppingCart" asp-route-id="@ViewBag.FoodSet.Id">
+                        <input type="hidden" value="@ViewBag.FoodSet.Id" name="Id" />
+                        <input asp-route-foodSetId="@ViewBag.FoodSet.Id" class="btn btn-success right" type="submit" asp-controller="FoodSet" asp-action="AddToShoppingCart" value="Add to shopping cart">
+                    </form>
+                }
+            }
+        }
+    </div>
+</div>
+
+<img class="img-thumbnail detail-img"src="https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=380&amp;h=180"/> <!--"~/images/sneakers/ViewBag.sneakers.ImageData" -->
+<!--<h4>Price: ViewBag.FoodSet.Price$</h4>-->
+<article>Description: @ViewBag.FoodSet.Description</article>

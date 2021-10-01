@@ -36,14 +36,13 @@
                     </div>
                     <div class="time-info-block">
                         <div class="time-info-block-content">
-                            <span>50 мин</span>
+                            <span>50 min</span>
                         </div>
                     </div>
                 </div>
                 <div class="info-block">
-                    <div class="name-block">
-                        @foodSet.Name
-                    </div>
+                    <a class="name-block" asp-controller="FoodSets" asp-action="Detail" asp-route-Id="@foodSet.Id">@foodSet.Name</a>
+
                     @foreach (Ingredient ingredient in foodSet.Ingredients)
                     {
                         <div class="description-block">@ingredient.Name</div>
@@ -51,17 +50,11 @@
 
                     <div class="card-footer">
                         <div class="rating-block st">
-                            <span class="rating-block-content">
-                                4.4
-                            </span>
+                            <span class="rating-block-content">4.4</span>
                         </div>
-                        <div class="price-block">
-                            $$
-                        </div>
+                        <div class="price-block">50$</div>
                         <div class="delivery-info">
-                            <span>
-                                Доставка от 0 руб
-                            </span>
+                            <span>Delivery from 0$</span>
                         </div>
                     </div>
                 </div>
