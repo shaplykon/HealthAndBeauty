@@ -89,5 +89,6 @@ namespace HealthAndBeauty.Data.Repositories
         {
             return context.ShoppingCarts.Where(cart => cart.UserId == userId).ToList();
         }
+
     }
 }

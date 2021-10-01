@@ -58,7 +58,7 @@ namespace HealthAndBeauty.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("FoodSetId")
+                    b.Property<int>("FoodSetId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ShortDescription")
@@ -71,10 +71,6 @@ namespace HealthAndBeauty.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FoodSetId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("comment");
                 });
@@ -120,6 +116,48 @@ namespace HealthAndBeauty.Migrations
                     b.HasIndex("FoodSetId");
 
                     b.ToTable("ingredients");
+                });
+
+            modelBuilder.Entity("HealthAndBeauty.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<Guid>("CourierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ReceiptDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("order");
+                });
+
+            modelBuilder.Entity("HealthAndBeauty.Models.OrderModels.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("FoodSetId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("order_item");
                 });
 
             modelBuilder.Entity("HealthAndBeauty.Models.ShoppingCart", b =>
@@ -182,21 +220,21 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "3d85006e-b89c-43e9-8d78-5ff9833b9d45",
+                            ConcurrencyStamp = "b3fbf05f-3662-4dc3-92ba-e9907dc7a763",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "bde4dcae-9567-42c3-845d-ca602a81fc7f",
+                            ConcurrencyStamp = "00d17ebc-6a36-4d2a-9e46-7484e0a86dd0",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "050eeb2e-2a58-423b-9f02-71e0a9612bf6",
+                            ConcurrencyStamp = "6f8b08a8-68b8-47e8-b883-925c41ceaade",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -372,21 +410,6 @@ namespace HealthAndBeauty.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("HealthAndBeauty.Models.Comment", b =>
-                {
-                    b.HasOne("HealthAndBeauty.Models.FoodSet", "FoodSet")
-                        .WithMany()
-                        .HasForeignKey("FoodSetId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("FoodSet");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HealthAndBeauty.Models.Ingredient", b =>

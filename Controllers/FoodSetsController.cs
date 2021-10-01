@@ -1,5 +1,6 @@
 ﻿using HealthAndBeauty.Data.Repositories;
 using HealthAndBeauty.Models;
+using HealthAndBeauty.Models.OrderModels;
 using HealthAndBeauty.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,14 @@ namespace HealthAndBeauty.Controllers
 {
     public class FoodSetsController : Controller
     {
+        private OrdersRepository _ordersRepository;
         private FoodSetsRepository _foodSetsRepository;
         UserManager<IdentityUser> userManager;
-        public FoodSetsController(FoodSetsRepository foodSetsRepository, UserManager<IdentityUser> _userManager)
+        public FoodSetsController(FoodSetsRepository foodSetsRepository,
+            OrdersRepository ordersRepository,
+            UserManager<IdentityUser> _userManager)
         {
+            _ordersRepository = ordersRepository;
             _foodSetsRepository = foodSetsRepository;
             userManager = _userManager;
         }
@@ -132,8 +137,43 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult ConfirmOrder()
+        {
+            Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+            List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
 
+            var orderId = _ordersRepository.AddOrder(new Order
+            {
+                Id = 0,
+                CourierId = Guid.Empty,
+                ReceiptDate = DateTime.Now,
+                Status = "Initial",
+                UserId = userId
+            });
 
+            List<int> orderItemsIds = new List<int>();
 
+            foreach(int id in foodSetsIds)
+            {
+                orderItemsIds.Add(_ordersRepository.AddOrderItems(new OrderItem 
+                {
+                    Id = 0,
+                    FoodSetId = id,
+                    OrderId = orderId
+                }));
+            }
+
+            if(orderId != 0 && orderItemsIds.Count != 0)
+            {
+                foreach(int foodSetsId in foodSetsIds)
+                {
+                    _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetsId);
+                }
+
+                // TODO: implement sending of order confirmation message
+            }
+            return RedirectToAction("ShoppingCart");
+        }
     }
 }

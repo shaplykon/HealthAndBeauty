@@ -34,14 +34,20 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-important" asp-area="" asp-controller="Manage" asp-action="Index">Roles managment</a>
                                 </li>
-                            }
-                            if (User.IsInRole("admin") || User.IsInRole("manager"))
-                            {
                                 <li class="nav-item">
                                     <a class="nav-link text-info" asp-area="" asp-controller="FoodSets" asp-action="Edit">Products managment</a>
                                 </li>
                             }
-                            if (User.IsInRole("user"))
+                            else if (User.IsInRole("manager"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-info" asp-area="" asp-controller="FoodSets" asp-action="Edit">Products managment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-important" asp-area="" asp-controller="Orders" asp-action="Index">Orders managment</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("user"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-info" asp-area="" asp-controller="FoodSets" asp-action="ShoppingCart">Shopping cart</a>

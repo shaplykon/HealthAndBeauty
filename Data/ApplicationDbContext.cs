@@ -1,4 +1,5 @@
 ﻿using HealthAndBeauty.Models;
+using HealthAndBeauty.Models.OrderModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ namespace HealthAndBeauty.Data
         public DbSet<FoodSet> FoodSets { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -43,6 +46,12 @@ namespace HealthAndBeauty.Data
                     Id = "3",
                     Name = "user",
                     NormalizedName = "USER"
+                },
+                new IdentityRole
+                {
+                    Id = "4",
+                    Name = "courier",
+                    NormalizedName = "COURIER"
                 });
         }
     }
