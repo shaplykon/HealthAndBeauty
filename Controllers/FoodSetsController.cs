@@ -24,7 +24,7 @@ namespace HealthAndBeauty.Controllers
         public IActionResult Edit()
         {
             var ingredientsList = new List<Ingredient>();
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 ingredientsList.Add(new Ingredient());
             }
@@ -69,14 +69,10 @@ namespace HealthAndBeauty.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 if (_foodSetsRepository.IsInShoppingCart(Guid.Parse(userManager.GetUserId(HttpContext.User)), Id))
-                {
                     ViewBag.isInCart = true;
-                }
 
                 else
-                {
                     ViewBag.isInCart = false;
-                }
             }
             else
             {
@@ -94,31 +90,50 @@ namespace HealthAndBeauty.Controllers
             return RedirectToAction("Detail", new { Id = foodSetId });
         }
 
-       /* [Microsoft.AspNetCore.Authorization.Authorize]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost]
         public IActionResult AddToShoppingCart(int foodSetId)
         {
             Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
-            if (purchaseRepository.IsInPurchases(userId, sneakersId))
+            if (_foodSetsRepository.IsInShoppingCart(userId, foodSetId))
             {
-                purchaseRepository.DeletePurchaseById(userId, sneakersId);
+                _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetId);
             }
             else
             {
-                purchaseRepository.SavePurchase(
-                new Purchase
+                _foodSetsRepository.AddToShoppingCart(
+                new ShoppingCart
                 {
-                    PurchaseId = 0,
+                    Id = 0,
                     UserId = userId,
-                    SneakersId = sneakersId,
+                    FoodSetId = foodSetId,
                     Date = DateTime.Now,
 
                 });
             }
-            return RedirectToAction("SneakersDetail", "Sneakers", new { Id = sneakersId });
-        }*/
+            return RedirectToAction("Detail", new { Id = foodSetId });
+        }
+
+        [HttpGet]
+        public IActionResult ShoppingCart()
+        {
+            Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+            List<ShoppingCart> shoppingCarts = _foodSetsRepository.GetShoppingCartByUserId(userId).ToList();
+            List<FoodSet> foodSets = new List<FoodSet>();
+            double totalPrice = 0;
+            foreach (ShoppingCart shoppingCart in shoppingCarts)
+            {
+                FoodSet set = _foodSetsRepository.GetFoodSetsById(shoppingCart.FoodSetId);
+                totalPrice += 30;
+                foodSets.Add(set);
+            }
+            ViewBag.totalPrice = totalPrice;
+            ViewBag.FoodSets = foodSets;
+            return View();
+        }
+
+
+
 
     }
-
-
 }

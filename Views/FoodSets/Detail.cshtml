@@ -15,25 +15,21 @@
             {
                 @if (ViewBag.isInCart)
                 {
-                    <form method="post" asp-controller="FoodSet" asp-action="AddToShoppingCart" asp-route-id="@ViewBag.FoodSet.Id">
+                    <form method="post" asp-controller="FoodSets" asp-action="AddToShoppingCart" asp-route-id="@ViewBag.FoodSet.Id">
                         <input type="hidden" value="@ViewBag.FoodSet.Id" name="Id" />
-                        <input asp-route-foodSetId="@ViewBag.FoodSet.Id" class="btn btn-danger right" type="submit" asp-controller="FoodSet" asp-action="AddToShoppingCart" value="Delete from shopping cart">
+                        <input asp-route-foodSetId="@ViewBag.FoodSet.Id" class="btn btn-danger right" type="submit" asp-controller="FoodSets" asp-action="AddToShoppingCart" value="Delete from shopping cart">
                     </form>
                 }
                 else
                 {
-                    <form method="post" asp-controller="FoodSet" asp-action="AddToShoppingCart" asp-route-id="@ViewBag.FoodSet.Id">
+                    <form method="post" asp-controller="FoodSets" asp-action="AddToShoppingCart" asp-route-id="@ViewBag.FoodSet.Id">
                         <input type="hidden" value="@ViewBag.FoodSet.Id" name="Id" />
-                        <input asp-route-foodSetId="@ViewBag.FoodSet.Id" class="btn btn-success right" type="submit" asp-controller="FoodSet" asp-action="AddToShoppingCart" value="Add to shopping cart">
+                        <input asp-route-foodSetId="@ViewBag.FoodSet.Id" class="btn btn-success right" type="submit" asp-controller="FoodSets" asp-action="AddToShoppingCart" value="Add to shopping cart">
                     </form>
                 }
             }
         }
     </div>
-
-
-
-
 </div>
 
 

@@ -72,5 +72,22 @@ namespace HealthAndBeauty.Data.Repositories
             context.Comments.Remove(context.Comments.Where(comment => comment.Id == commentId).FirstOrDefault());
             context.SaveChanges();
         }
+
+        internal void DeleteFromShoppingCart(Guid userId, int foodSetId)
+        {
+            context.ShoppingCarts.Remove(context.ShoppingCarts.Where(cart => cart.UserId == userId && cart.FoodSetId == foodSetId).FirstOrDefault());
+            context.SaveChanges();
+        }
+
+        internal void AddToShoppingCart(ShoppingCart shoppingCart)
+        {
+            context.ShoppingCarts.Add(shoppingCart);
+            context.SaveChanges();
+        }
+
+        internal List<ShoppingCart> GetShoppingCartByUserId(Guid userId)
+        {
+            return context.ShoppingCarts.Where(cart => cart.UserId == userId).ToList();
+        }
     }
 }
