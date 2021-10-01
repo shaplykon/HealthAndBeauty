@@ -1,4 +1,6 @@
 ﻿using HealthAndBeauty.Models;
+
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,11 +42,35 @@ namespace HealthAndBeauty.Data.Repositories
             return foodSet;
         }
 
-        internal bool IsInShoppingCart(Guid guid, int id)
+        internal bool IsInShoppingCart(Guid userId, int id)
         {
-            IQueryable<ShoppingCart> shoppingCartItem = context.ShoppingCarts.Where(x => x.FoodSetId == id && x.UserId == guid);
+            IQueryable<ShoppingCart> shoppingCartItem = context.ShoppingCarts.Where(x => x.FoodSetId == id && x.UserId == userId);
             if (shoppingCartItem.Count() == 0) return false;
             else return true;
+        }
+
+        internal List<Comment> GetCommentBySetId(int setId)
+        {
+            var commentsList = context.Comments.Where(comment => comment.FoodSetId == setId).ToList();
+
+            foreach(Comment comment in commentsList)
+            {
+                
+            }
+            return commentsList;
+        }
+
+        internal void AddComment(Comment comment, int foodSetId)
+        { 
+            comment.FoodSetId = context.FoodSets.Where(set => set.Id == foodSetId).FirstOrDefault().Id;
+            context.Comments.Add(comment);
+            context.SaveChanges();
+        }
+
+        internal void DeleteCommentById(int commentId)
+        {
+            context.Comments.Remove(context.Comments.Where(comment => comment.Id == commentId).FirstOrDefault());
+            context.SaveChanges();
         }
     }
 }

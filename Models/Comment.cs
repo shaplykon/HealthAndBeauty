@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 namespace HealthAndBeauty.Models
 {
     [Table("comment")]
-    public class COmment
+    public class Comment
     {
         public int Id { get; set; }
         public string Text { get; set; }
         public string ShortDescription { get; set; }
         public DateTime Date { get; set; }
-        public IdentityUser User { get; set; }
+        public string  UserId { get; set; }
+        public int FoodSetId { get; set; }
 
     }
 }

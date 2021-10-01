@@ -8,6 +8,7 @@ namespace HealthAndBeauty.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<FoodSet> FoodSets { get; set; }
         public DbSet<Address> Addresses { get; set; }

@@ -48,6 +48,37 @@ namespace HealthAndBeauty.Migrations
                     b.ToTable("google_maps");
                 });
 
+            modelBuilder.Entity("HealthAndBeauty.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("FoodSetId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodSetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("comment");
+                });
+
             modelBuilder.Entity("HealthAndBeauty.Models.FoodSet", b =>
                 {
                     b.Property<int>("Id")
@@ -91,6 +122,37 @@ namespace HealthAndBeauty.Migrations
                     b.ToTable("ingredients");
                 });
 
+            modelBuilder.Entity("HealthAndBeauty.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("FoodSetId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("isConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodSetId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("shopping_cart");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -120,21 +182,21 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "53ec31de-2ad6-4ff9-b7d4-36ae90087e52",
+                            ConcurrencyStamp = "3d85006e-b89c-43e9-8d78-5ff9833b9d45",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "f457a75d-bed9-4f78-ad12-89bb27a83891",
+                            ConcurrencyStamp = "bde4dcae-9567-42c3-845d-ca602a81fc7f",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "9f1c6d57-bf8a-4c7a-8bc1-6a74436370cd",
+                            ConcurrencyStamp = "050eeb2e-2a58-423b-9f02-71e0a9612bf6",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -312,6 +374,21 @@ namespace HealthAndBeauty.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("HealthAndBeauty.Models.Comment", b =>
+                {
+                    b.HasOne("HealthAndBeauty.Models.FoodSet", "FoodSet")
+                        .WithMany()
+                        .HasForeignKey("FoodSetId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("FoodSet");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HealthAndBeauty.Models.Ingredient", b =>
                 {
                     b.HasOne("HealthAndBeauty.Models.FoodSet", "FoodSet")
@@ -321,6 +398,23 @@ namespace HealthAndBeauty.Migrations
                         .IsRequired();
 
                     b.Navigation("FoodSet");
+                });
+
+            modelBuilder.Entity("HealthAndBeauty.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("HealthAndBeauty.Models.FoodSet", "FoodSet")
+                        .WithMany()
+                        .HasForeignKey("FoodSetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("FoodSet");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

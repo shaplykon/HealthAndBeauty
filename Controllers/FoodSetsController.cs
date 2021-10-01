@@ -45,6 +45,19 @@ namespace HealthAndBeauty.Controllers
             }
             return RedirectToAction("Edit");
         }
+        [HttpPost]
+        public IActionResult CommentAdd(Comment comment, int foodSetId)
+        {
+
+            if (ModelState.IsValid)
+            {
+                comment.UserId = userManager.GetUserId(HttpContext.User);
+                comment.Date = DateTime.Now;
+                _foodSetsRepository.AddComment(comment, foodSetId);
+            }
+
+            return RedirectToAction("Detail", new { Id = foodSetId });
+        }
 
         [HttpGet]
         public IActionResult Detail(int Id)
@@ -69,8 +82,16 @@ namespace HealthAndBeauty.Controllers
             {
                 ViewBag.isInCart = false;
             }
-
+            ViewBag.Comments = _foodSetsRepository.GetCommentBySetId(Id);
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult DeleteComment(int commentId, int foodSetId)
+        {
+            _foodSetsRepository.DeleteCommentById(commentId);
+            //logger.LogWarning("Comment with Id {0} was deleted", commentId);
+            return RedirectToAction("Detail", new { Id = foodSetId });
         }
 
        /* [Microsoft.AspNetCore.Authorization.Authorize]
@@ -98,4 +119,6 @@ namespace HealthAndBeauty.Controllers
         }*/
 
     }
+
+
 }
