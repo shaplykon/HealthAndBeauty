@@ -128,6 +128,12 @@ namespace HealthAndBeauty.Migrations
                     b.Property<Guid>("CourierId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsCash")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDelivery")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("ReceiptDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -220,23 +226,30 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "b3fbf05f-3662-4dc3-92ba-e9907dc7a763",
+                            ConcurrencyStamp = "f09cdbc0-8a7a-4ae4-af26-0a4fb52aef35",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "00d17ebc-6a36-4d2a-9e46-7484e0a86dd0",
+                            ConcurrencyStamp = "113e6900-f800-455a-aacf-be16ae7b7674",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "6f8b08a8-68b8-47e8-b883-925c41ceaade",
+                            ConcurrencyStamp = "f6b7464c-92b6-4f90-85ec-272701ce2487",
                             Name = "user",
                             NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "4",
+                            ConcurrencyStamp = "76f88f18-b296-43be-922e-b2a89fb65354",
+                            Name = "courier",
+                            NormalizedName = "COURIER"
                         });
                 });
 

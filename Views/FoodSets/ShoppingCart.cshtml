@@ -1,82 +1,181 @@
-﻿@model HealthAndBeauty.Models.FoodSet
+﻿
+@model HealthAndBeauty.ViewModels.OrderViewModel
+
 @{
     ViewData["Title"] = "Shopping cart";
 }
+<head>
+    <script src="~/js/shoppingcart-scripts/shoppingcart-scripts.js"></script>
+    <link rel="stylesheet" href="~/css/shopping_cart/shopping_cart.css" />
+</head>
+<body>
 
-@if (ViewBag.FoodSets.Count == 0)
-{
-    <a class="font-weight-bold">Your shopping cart is empy</a>
-}
 
-<section>
+    @if (ViewBag.FoodSets.Count == 0)
+    {
+        <a class="font-weight-bold">Your shopping cart is empy</a>
+    }
 
-    <div class="row">
+    <section>
 
-        <div class="col-lg-8">
-            @foreach (FoodSet foodSet in ViewBag.FoodSets)
-            {
-                <div class="card wish-list mb-3">
-                    <div class="card-body">
+        <div class="row">
 
-                        <div class="row mb-4">
-                            <div class="col-md-5 col-lg-3 col-xl-3">
-                                <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-                                    <img class="img-fluid w-100"
-                                         src="https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=380&amp;h=180" alt="Sample">
-                                </div>
-                            </div>
-                            <div class="col-md-7 col-lg-9 col-xl-9">
-                                <div>
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <p class="mb-3 text-muted text-uppercase small">Set name: @foodSet.Name</p>
-                                            <!--<p class="mb-2 text-muted text-uppercase small">Model: foodSet.Model</p>-->
-                                            <!--<p class="mb-3 text-muted text-uppercase small">Release date: foodSet.ReleaseDate.ToShortDateString()</p>-->
-                                        </div>
+            <div class="col-lg-8">
+                @foreach (FoodSet foodSet in ViewBag.FoodSets)
+                {
+                    <div class="card wish-list mb-3">
+                        <div class="card-body">
+
+                            <div class="row mb-4">
+                                <div class="col-md-5 col-lg-3 col-xl-3">
+                                    <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                                        <img class="img-fluid w-100"
+                                             src="https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=380&amp;h=180" alt="Sample">
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <!--<a class="card-link-secondary small text-uppercase mr-3" asp-controller="FoodSets" asp-action="DeleteFromShoppingCart" asp-route-="sneakers.Id">Detail</a>-->
+                                </div>
+                                <div class="col-md-7 col-lg-9 col-xl-9">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <p class="mb-3 text-muted text-uppercase small">Set name: @foodSet.Name</p>
+                                                <!--<p class="mb-2 text-muted text-uppercase small">Model: foodSet.Model</p>-->
+                                                <!--<p class="mb-3 text-muted text-uppercase small">Release date: foodSet.ReleaseDate.ToShortDateString()</p>-->
+                                            </div>
                                         </div>
-                                        <p class="mb-0"><span><strong>100$</strong></span></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <!--<a class="card-link-secondary small text-uppercase mr-3" asp-controller="FoodSets" asp-action="DeleteFromShoppingCart" asp-route-="sneakers.Id">Detail</a>-->
+                                            </div>
+                                            <p class="mb-0"><span><strong>100$</strong></span></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="mb-4">We accept</h5>
-                    <img class="mr-2" width="45px"
-                         src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                         alt="Visa">
-                    <img class="mr-2" width="45px"
-                         src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                         alt="American Express">
-                    <img class="mr-2" width="45px"
-                         src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                         alt="Mastercard">
-                    <img class="mr-2" width="45px"
-                         src="https://z9t4u9f6.stackpathcdn.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
-                         alt="PayPal acceptance mark">
-                </div>
-                <hr class="mb-4">
-            </div>
-        </div>
-        @if (ViewBag.FoodSets.Count > 0)
-        {
-            <div class="col-lg-4">
+                }
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="mb-3">The total price of @ViewBag.FoodSets.Count items is <span><strong>@ViewBag.totalPrice$</strong></span> </h5>
-                        <form method="post" asp-controller="FoodSets" asp-action="ConfirmOrder">
-                            <input type="submit" class="btn btn-primary btn-block waves-effect waves-light" value="Confirm order" />
-                        </form>
+                        <h5 class="mb-4">We accept</h5>
+                        <img class="mr-2" width="45px"
+                             src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                             alt="Visa">
+                        <img class="mr-2" width="45px"
+                             src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                             alt="American Express">
+                        <img class="mr-2" width="45px"
+                             src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                             alt="Mastercard">
+                        <img class="mr-2" width="45px"
+                             src="https://z9t4u9f6.stackpathcdn.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
+                             alt="PayPal acceptance mark">
                     </div>
+                    <hr class="mb-4">
                 </div>
             </div>
-        }
-    </div>
-</section>
+            @if (ViewBag.FoodSets.Count > 0)
+            {
+                <div class="col-lg-4">
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="mb-3">The total price of @ViewBag.FoodSets.Count items is <span><strong>@ViewBag.totalPrice$</strong></span> </h5>
+
+                            <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Payment</strong></span> options</h6>
+
+                            <form method="post" asp-controller="FoodSets" asp-action="ConfirmOrder" name="properties_form">
+
+                                <fieldset id="payment-group">
+                                    <div>
+                                        @Html.RadioButtonFor(model => model.IsCash, true, new { id = "IsCash_true" })
+                                        <label for="IsCash_true">Cash</label>
+                                        <br />
+                                        @Html.RadioButtonFor(model => model.IsCash, false, new { id = "IsCash_false" })
+                                        <label for="IsCash_false">Card</label>
+                                        <br />
+                                    </div>
+                                </fieldset>
+
+                                <div class="creditCardForm hidden" id="cardForm">
+                                    <div class="payment">
+
+                                        <div class="form-group owner">
+                                            <label for="owner">Owner</label>
+                                            <input type="text" class="form-control" id="owner">
+                                        </div>
+                                        <div class="form-group CVV">
+                                            <label for="cvv">CVV</label>
+                                            <input type="text" class="form-control" id="cvv">
+                                        </div>
+                                        <div class="form-group" id="card-number-field">
+                                            <label for="cardNumber">Card Number</label>
+                                            <input type="text" class="form-control" id="cardNumber">
+                                        </div>
+                                        <div class="form-group" id="expiration-date">
+                                            <label>Expiration Date</label>
+                                            <select>
+                                                <option value="01">January</option>
+                                                <option value="02">February </option>
+                                                <option value="03">March</option>
+                                                <option value="04">April</option>
+                                                <option value="05">May</option>
+                                                <option value="06">June</option>
+                                                <option value="07">July</option>
+                                                <option value="08">August</option>
+                                                <option value="09">September</option>
+                                                <option value="10">October</option>
+                                                <option value="11">November</option>
+                                                <option value="12">December</option>
+                                            </select>
+                                            <select>
+                                                <option value="16"> 2016</option>
+                                                <option value="17"> 2017</option>
+                                                <option value="18"> 2018</option>
+                                                <option value="19"> 2019</option>
+                                                <option value="20"> 2020</option>
+                                                <option value="21"> 2021</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" id="credit_cards">
+                                            <img src="~/images/visa.jpg" id="visa">
+                                            <img src="~/images/mastercard.jpg" id="mastercard">
+                                            <img src="~/images/amex.jpg" id="amex">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Delivery</strong></span> options</h6>
+                                <fieldset id="delivery-group">
+                                    <div>
+                                        @Html.RadioButtonFor(model => model.IsDelivery, true, new { id = "IsDelivery_true" })
+                                        <label for="IsDelivery_true">Delivery</label>
+                                        <br />
+                                        @Html.RadioButtonFor(model => model.IsDelivery, false, new { id = "IsDelivery_false" })
+                                        <label for="IsDelivery_false">Pickup</label>
+                                        <br />
+                                    </div>
+                                </fieldset>
+
+                                <div id="deliveryAddressForm" class="delivery-address-form" >
+
+                                </div>
+
+                                <div id="pickupAddressForm" class="pickup-address-form hidden">
+
+                                </div>
+
+
+                                <input type="submit" class="btn btn-primary btn-block waves-effect waves-light" value="Confirm order" />
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</body>

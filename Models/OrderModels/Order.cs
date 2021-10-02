@@ -11,6 +11,8 @@ namespace HealthAndBeauty.Models
         public Guid CourierId { get; set; }
         public string Status { get; set; }
         public DateTime ReceiptDate{ get; set; }
+        public bool IsCash { get; set; }
+        public bool IsDelivery { get; set; }
         //public string DeliveryType { get; set; }
         //public string Address { get; set; }
     }

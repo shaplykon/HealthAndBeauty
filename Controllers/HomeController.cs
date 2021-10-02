@@ -15,22 +15,24 @@ using System.Text;
 using Flurl.Http;
 using Flurl;
 using HealthAndBeauty.Data.Repositories;
+using NLog;
 
 namespace HealthAndBeauty.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private FoodSetsRepository _foodSetsRepository;
-
-        public HomeController(ILogger<HomeController> logger, FoodSetsRepository foodSetsRepository)
+        ILogger<HomeController> _logger;
+        public HomeController( FoodSetsRepository foodSetsRepository, ILogger<HomeController> logger)
         {
-            _logger = logger;
             _foodSetsRepository = foodSetsRepository;
+            _logger = logger;
         }
+
 
         public async Task<ActionResult> Index()
         {
+            _logger.LogError("Test");
             /*
             string WEBSERVICE_URL = "https://trackapi.nutritionix.com/v2/natural/nutrients";
             Foods foodsArray = null;

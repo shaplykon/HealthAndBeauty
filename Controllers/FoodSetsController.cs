@@ -67,9 +67,9 @@ namespace HealthAndBeauty.Controllers
         [HttpGet]
         public IActionResult Detail(int Id)
         {
-            FoodSet sneakers;
-            sneakers = _foodSetsRepository.GetFoodSetsById(Id);
-            ViewBag.FoodSet = sneakers;
+            FoodSet foodSet;
+            foodSet = _foodSetsRepository.GetFoodSetsById(Id);
+            ViewBag.FoodSet = foodSet;
 
             if (User.Identity.IsAuthenticated)
             {
@@ -134,45 +134,54 @@ namespace HealthAndBeauty.Controllers
             }
             ViewBag.totalPrice = totalPrice;
             ViewBag.FoodSets = foodSets;
-            return View();
+
+            OrderViewModel orderViewModel = new OrderViewModel { IsCash = true, IsDelivery = true };
+
+            return View(orderViewModel);
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrder()
+        public IActionResult ConfirmOrder(OrderViewModel orderViewModel)
         {
-            Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
-            List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
-
-            var orderId = _ordersRepository.AddOrder(new Order
+            if (ModelState.IsValid)
             {
-                Id = 0,
-                CourierId = Guid.Empty,
-                ReceiptDate = DateTime.Now,
-                Status = "Initial",
-                UserId = userId
-            });
+                Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+                List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
 
-            List<int> orderItemsIds = new List<int>();
-
-            foreach(int id in foodSetsIds)
-            {
-                orderItemsIds.Add(_ordersRepository.AddOrderItems(new OrderItem 
+                var orderId = _ordersRepository.AddOrder(new Order
                 {
                     Id = 0,
-                    FoodSetId = id,
-                    OrderId = orderId
-                }));
-            }
+                    CourierId = Guid.Empty,
+                    ReceiptDate = DateTime.Now,
+                    Status = "Initial",
+                    UserId = userId,
+                    IsCash = ((Order)orderViewModel).IsCash,
+                    IsDelivery = ((Order)orderViewModel).IsDelivery
+                });
 
-            if(orderId != 0 && orderItemsIds.Count != 0)
-            {
-                foreach(int foodSetsId in foodSetsIds)
+                List<int> orderItemsIds = new List<int>();
+
+                foreach (int id in foodSetsIds)
                 {
-                    _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetsId);
+                    orderItemsIds.Add(_ordersRepository.AddOrderItems(new OrderItem
+                    {
+                        Id = 0,
+                        FoodSetId = id,
+                        OrderId = orderId
+                    }));
                 }
 
-                // TODO: implement sending of order confirmation message
+                if (orderId != 0 && orderItemsIds.Count != 0)
+                {
+                    foreach (int foodSetsId in foodSetsIds)
+                    {
+                        _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetsId);
+                    }
+
+                    // TODO: implement sending of order confirmation message
+                }
             }
+           
             return RedirectToAction("ShoppingCart");
         }
     }
