@@ -16,6 +16,10 @@ using Flurl.Http;
 using Flurl;
 using HealthAndBeauty.Data.Repositories;
 using NLog;
+using HealthAndBeauty.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Identity;
+using HealthAndBeauty.Services.UserConnections;
 
 namespace HealthAndBeauty.Controllers
 {
@@ -23,15 +27,24 @@ namespace HealthAndBeauty.Controllers
     {
         private FoodSetsRepository _foodSetsRepository;
         ILogger<HomeController> _logger;
-        public HomeController( FoodSetsRepository foodSetsRepository, ILogger<HomeController> logger)
+        IHubContext<NotificationHub> _notificationHub;
+        private readonly IUserConnectionManager _userConnectionManager;
+        public HomeController( 
+            FoodSetsRepository foodSetsRepository, 
+            ILogger<HomeController> logger, 
+            IHubContext<NotificationHub> notificationHub,
+              IUserConnectionManager userConnectionManager)
         {
+            _userConnectionManager = userConnectionManager;
             _foodSetsRepository = foodSetsRepository;
             _logger = logger;
+            _notificationHub = notificationHub;
         }
 
 
         public async Task<ActionResult> Index()
         {
+
             _logger.LogError("Test");
             /*
             string WEBSERVICE_URL = "https://trackapi.nutritionix.com/v2/natural/nutrients";
@@ -63,7 +76,11 @@ namespace HealthAndBeauty.Controllers
 
         public IActionResult Privacy()
         {
+            string connectionId = _userConnectionManager.GetConnectionIdByName("admin@admin.admin");
+            _notificationHub.Clients.Client(connectionId).SendAsync("Send", "");
             return View();
+
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

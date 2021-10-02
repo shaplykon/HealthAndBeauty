@@ -1,8 +1,11 @@
 using HealthAndBeauty.Data;
+using HealthAndBeauty.Hubs;
 using HealthAndBeauty.Services;
+using HealthAndBeauty.Services.UserConnections;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +28,13 @@ namespace HealthAndBeauty
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddRepositories();
-            
+
+            services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+
+            services.AddSignalR();
+
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => 
@@ -74,6 +83,8 @@ namespace HealthAndBeauty
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<NotificationHub>("/notification");
+
             });
         }
     }

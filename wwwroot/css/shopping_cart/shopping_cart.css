@@ -14,7 +14,8 @@
     margin: 0 auto;
     overflow: hidden;
     color: #4c4e56;
-    height: auto;
+    height: 600px;
+    transition:linear 0.5s;
 }
 
 .hidden {
