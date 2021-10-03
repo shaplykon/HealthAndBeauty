@@ -147,16 +147,16 @@ namespace HealthAndBeauty.Controllers
             {
                 Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
                 List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
-
+                    
                 var orderId = _ordersRepository.AddOrder(new Order
                 {
                     Id = 0,
                     CourierId = Guid.Empty,
                     ReceiptDate = DateTime.Now,
-                    Status = "Initial",
+                    Status = orderViewModel.IsDelivery ? "Wait for courier" : "Ready",
                     UserId = userId,
-                    IsCash = ((Order)orderViewModel).IsCash,
-                    IsDelivery = ((Order)orderViewModel).IsDelivery
+                    IsCash = orderViewModel.IsCash,
+                    IsDelivery = orderViewModel.IsDelivery
                 });
 
                 List<int> orderItemsIds = new List<int>();

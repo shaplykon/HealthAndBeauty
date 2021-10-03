@@ -16,8 +16,9 @@
                     document.getElementById("deliveryAddressForm").classList.remove('hidden')
                 }
                 else {
-                    document.getElementById("pickupAddressForm").classList.remove('hidden')
                     document.getElementById("deliveryAddressForm").classList.add('hidden')
+                    document.getElementById("pickupAddressForm").classList.remove('hidden')
+
                 }
             }
             

@@ -15,10 +15,9 @@ namespace HealthAndBeauty.Data.Repositories
             context = _context;
         }
 
-        internal List<Order> GetOrders()
-        {
-            return context.Orders.ToList();
-        }
+        internal List<Order> GetOrders() => 
+             context.Orders.ToList();
+
         internal int AddOrderItems(OrderItem orderItem)
         {
             context.OrderItems.Add(orderItem);
@@ -32,5 +31,15 @@ namespace HealthAndBeauty.Data.Repositories
             context.SaveChanges();
             return order.Id;
         }
+
+        internal void UpdateOrder(Order order)
+        {
+            context.Orders.Update(order);
+            context.SaveChanges();
+        }
+
+        internal Order GetOrder(string orderId) => 
+            context.Orders.Where(order => order.Id == int.Parse(orderId)).First();
+        
     }
 }
