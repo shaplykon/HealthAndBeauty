@@ -13,7 +13,6 @@ namespace HealthAndBeauty.Models
         public DateTime ReceiptDate{ get; set; }
         public bool IsCash { get; set; }
         public bool IsDelivery { get; set; }
-        //public string DeliveryType { get; set; }
-        //public string Address { get; set; }
+        public string Address { get; set; }
     }
 }

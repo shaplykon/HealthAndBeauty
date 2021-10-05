@@ -1,10 +1,23 @@
-﻿.delivery-address-form{
+﻿.loading-box {
+    position: relative;
+    width: 305px !important;
+    height: 300px !important;
+    bottom: 300px;
+    background: black;
+    opacity: 0.8;
+}
+
+.collapsed {
+    visibility:collapse;
+}
+
+.delivery-address-form{
     height:200px;
 
 }
 
 .pickup-address-form {
-    height: 300px;
+    height: 400px;
 }
 
     .pickup-address-form .hidden {
@@ -22,6 +35,9 @@
     height: 600px;
     transition:linear 0.5s;
 }
+
+
+
 
 .hidden {
         height: 0;

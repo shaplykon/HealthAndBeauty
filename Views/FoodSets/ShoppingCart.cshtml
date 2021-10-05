@@ -5,6 +5,7 @@
     ViewData["Title"] = "Shopping cart";
 }
 <head>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJMF3gVJD6f6ue_2lLeBODZIfgOI2B3os"></script>
     <script src="~/js/shoppingcart-scripts/shoppingcart-scripts.js"></script>
     <link rel="stylesheet" href="~/css/shopping_cart/shopping_cart.css" />
 </head>
@@ -66,9 +67,6 @@
                         <img class="mr-2" width="45px"
                              src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
                              alt="Mastercard">
-                        <img class="mr-2" width="45px"
-                             src="https://z9t4u9f6.stackpathcdn.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
-                             alt="PayPal acceptance mark">
                     </div>
                     <hr class="mb-4">
                 </div>
@@ -159,22 +157,26 @@
                                     </div>
                                 </fieldset>
 
-                                <div id="deliveryAddressForm" class="delivery-address-form" >
-
+                                <div id="deliveryAddressForm" class="delivery-address-form">
+                                    <label asp-for="Address" id="addressInputLabel"></label>
+                                    <input asp-for="Address" type="text" id="addressInput" />
                                 </div>
 
                                 <div id="pickupAddressForm" class="pickup-address-form hidden">
-                                    <fieldset id="pickup-group">
-                                        <div>
-    
-                                        </div>
-                                    </fieldset>
+                                    @Html.DropDownListFor(model => model.AddressName, new SelectList(ViewBag.Addresses, "Text", "Text"), "", new {@id = "AddressId" })
+
+                                    <div id="MapDiv" class="map-container-small"> </div>
+
+                                    <div id="info-panel">
+                                        <p style="margin: 0 !important;" id="distance"></p>
+                                        <p style="margin: 0 !important;" id="duration"></p>
+                                    </div>
+
+                                    <div class="loading-box collapsed" id="loadingBox">
+                                        <p style="color: white;">Loading</p>
+                                    </div>
                                 </div>
-
-
-                                <input type="submit" class="btn btn-primary btn-block waves-effect waves-light" value="Confirm order" />
-
-
+                                <input type="submit" class="btn btn-primary btn-block waves-effect waves-light" style="margin-top:10px;" value="Confirm order" />
                             </form>
                         </div>
                     </div>

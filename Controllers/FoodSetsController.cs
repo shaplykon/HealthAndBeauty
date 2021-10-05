@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.WebPages.Html;
 
 namespace HealthAndBeauty.Controllers
 {
@@ -15,14 +16,18 @@ namespace HealthAndBeauty.Controllers
     {
         private OrdersRepository _ordersRepository;
         private FoodSetsRepository _foodSetsRepository;
-        UserManager<IdentityUser> userManager;
+        private UserManager<IdentityUser> _userManager;
+        private GoogleMapsRepository _googleMapsRepository;
+
         public FoodSetsController(FoodSetsRepository foodSetsRepository,
             OrdersRepository ordersRepository,
-            UserManager<IdentityUser> _userManager)
+            UserManager<IdentityUser> userManager,
+            GoogleMapsRepository googleMapsRepository)
         {
             _ordersRepository = ordersRepository;
             _foodSetsRepository = foodSetsRepository;
-            userManager = _userManager;
+            _userManager = userManager;
+            _googleMapsRepository = googleMapsRepository;
         }
 
         [HttpGet]
@@ -56,7 +61,7 @@ namespace HealthAndBeauty.Controllers
 
             if (ModelState.IsValid)
             {
-                comment.UserId = userManager.GetUserId(HttpContext.User);
+                comment.UserId = _userManager.GetUserId(HttpContext.User);
                 comment.Date = DateTime.Now;
                 _foodSetsRepository.AddComment(comment, foodSetId);
             }
@@ -73,7 +78,7 @@ namespace HealthAndBeauty.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                if (_foodSetsRepository.IsInShoppingCart(Guid.Parse(userManager.GetUserId(HttpContext.User)), Id))
+                if (_foodSetsRepository.IsInShoppingCart(Guid.Parse(_userManager.GetUserId(HttpContext.User)), Id))
                     ViewBag.isInCart = true;
 
                 else
@@ -99,7 +104,7 @@ namespace HealthAndBeauty.Controllers
         [HttpPost]
         public IActionResult AddToShoppingCart(int foodSetId)
         {
-            Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+            Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
             if (_foodSetsRepository.IsInShoppingCart(userId, foodSetId))
             {
                 _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetId);
@@ -122,18 +127,34 @@ namespace HealthAndBeauty.Controllers
         [HttpGet]
         public IActionResult ShoppingCart()
         {
-            Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+            Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
             List<ShoppingCart> shoppingCarts = _foodSetsRepository.GetShoppingCartByUserId(userId).ToList();
             List<FoodSet> foodSets = new List<FoodSet>();
             double totalPrice = 0;
+
             foreach (ShoppingCart shoppingCart in shoppingCarts)
             {
                 FoodSet set = _foodSetsRepository.GetFoodSetsById(shoppingCart.FoodSetId);
                 totalPrice += 30;
                 foodSets.Add(set);
             }
+
+            var addressesList = new List<SelectListItem>();
+
+            var addresses = _googleMapsRepository.GetCoordinates();
+
+            foreach(Address address in addresses)
+            {
+                addressesList.Add(new SelectListItem
+                {
+                    Value = address.AddressName,
+                    Text = address.AddressName
+                });
+            }
+
             ViewBag.totalPrice = totalPrice;
             ViewBag.FoodSets = foodSets;
+            ViewBag.Addresses = addressesList;
 
             OrderViewModel orderViewModel = new OrderViewModel { IsCash = true, IsDelivery = true };
 
@@ -141,13 +162,13 @@ namespace HealthAndBeauty.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrder(OrderViewModel orderViewModel)
+        public IActionResult ConfirmOrder(OrderViewModel orderViewModel, string addressName)
         {
             if (ModelState.IsValid)
             {
-                Guid userId = Guid.Parse(userManager.GetUserId(HttpContext.User));
+                Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
                 List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
-                    
+
                 var orderId = _ordersRepository.AddOrder(new Order
                 {
                     Id = 0,
@@ -156,7 +177,8 @@ namespace HealthAndBeauty.Controllers
                     Status = orderViewModel.IsDelivery ? "Wait for courier" : "Ready",
                     UserId = userId,
                     IsCash = orderViewModel.IsCash,
-                    IsDelivery = orderViewModel.IsDelivery
+                    IsDelivery = orderViewModel.IsDelivery,
+                    Address = orderViewModel.IsDelivery ? orderViewModel.Address : addressName
                 });
 
                 List<int> orderItemsIds = new List<int>();

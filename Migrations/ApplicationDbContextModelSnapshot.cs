@@ -125,6 +125,9 @@ namespace HealthAndBeauty.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("CourierId")
                         .HasColumnType("uuid");
 
@@ -226,28 +229,28 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "f09cdbc0-8a7a-4ae4-af26-0a4fb52aef35",
+                            ConcurrencyStamp = "a4d00047-c4f9-460f-9454-edb530ad18f6",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "113e6900-f800-455a-aacf-be16ae7b7674",
+                            ConcurrencyStamp = "eac35145-f082-4081-bede-c6436c6c7c07",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f6b7464c-92b6-4f90-85ec-272701ce2487",
+                            ConcurrencyStamp = "fad02871-78c3-4d1c-80fa-87a0a4295c4a",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "76f88f18-b296-43be-922e-b2a89fb65354",
+                            ConcurrencyStamp = "4bf3403e-1e5b-4152-a73e-630e437cd887",
                             Name = "courier",
                             NormalizedName = "COURIER"
                         });

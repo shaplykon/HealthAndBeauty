@@ -1,9 +1,6 @@
 ﻿using HealthAndBeauty.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Web.WebPages.Html;
 
 namespace HealthAndBeauty.ViewModels
 {
@@ -15,6 +12,10 @@ namespace HealthAndBeauty.ViewModels
 
         [Required(ErrorMessage = "Please input delivery")]
         public bool IsDelivery { get; set; }
+
+        public string Address { get; set; }
+
+        public string AddressName { get; set; }
 
         public static explicit operator Order(OrderViewModel viewModel)
         {
@@ -28,9 +29,7 @@ namespace HealthAndBeauty.ViewModels
             {
                 order.IsDelivery = viewModel.IsDelivery;
             }
-
             return order;
         }
     }
-
 }
