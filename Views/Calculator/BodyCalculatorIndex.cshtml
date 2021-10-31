@@ -3,33 +3,34 @@
 </body>
 
 <body>
-        <div>
-            <p id="intro">Calculate your BMI (body mass index) by using the form below. Enter your weight and height and click the Calculate button to display your BMI result.</p>
-            <form action="none" method="post" name="bmiform">
-                <fieldset>
-                    <legend>Height and Weight</legend>
-                    <label for="pounds">Weight:</label>
-                    <input type="text" name="weightInput" id="weightInput" onchange="weightInputChanged()">
-                    <select onchange="onWeightUnitsChanged(this.value)">
-                        <option value="kg">kg</option>
-                        <option value="pounds">pounds</option>
-                    </select>
-                    <br>
-                    <label for="inches">Height:</label>
-                    <input type="text" name="heightInput" id="heightInput" onchange="heightInputChanged()">
-                    <select onchange="onHeightUnitsChanged(this.value)">
-                        <option value="cm">cm</option>
-                        <option value="inches">inches</option>
-                    </select>
-                    <br>
-                </fieldset>
+    <div class="text-center">
+        <p id="intro">Calculate your BMI (body mass index) by using the form below.</p>
+        <p id="intro">Enter your weight and height and click the Calculate button to display your BMI result.</p>
+        <form action="none" method="post" name="bmiform">
+            <fieldset>
+                <legend>Height and Weight</legend>
+                <label for="pounds">Weight:</label>
+                <input type="text" onkeypress='validate(event)' name="weightInput" id="weightInput" oninput="inputChanged()">
+                <select onchange="onWeightUnitsChanged(this.value)">
+                    <option value="kg">kg</option>
+                    <option value="pounds">pounds</option>
+                </select>
+                <br>
+                <label for="inches">Height:</label>
+                <input type="text" name="heightInput" id="heightInput" onkeypress='validate(event)' oninput="inputChanged()">
+                <select onchange="onHeightUnitsChanged(this.value)">
+                    <option value="cm">cm</option>
+                    <option value="inches">inches</option>
+                </select>
+                <br>
+            </fieldset>
 
-                <fieldset>
-                    <legend>BMI</legend>
-                    <label for="bmi" id="bmi_label">Your calculated BMI is:</label>
-                    <input type="text" name="bmi" id="bmi" readonly="readonly">
-                </fieldset>
-            </form>
-        </div>
+            <fieldset>
+                <legend>BMI</legend>
+                <label for="bmi" id="bmi_label">Your calculated BMI is:</label>
+                <input type="text" name="bmi" id="bmi" readonly="readonly">
+            </fieldset>
+        </form>
+    </div>
 
 </body>
