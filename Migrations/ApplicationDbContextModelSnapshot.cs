@@ -87,6 +87,9 @@ namespace HealthAndBeauty.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<string>("ImageData")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -229,28 +232,28 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "a4d00047-c4f9-460f-9454-edb530ad18f6",
+                            ConcurrencyStamp = "e324b898-0a36-4748-819b-37936aef846f",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "eac35145-f082-4081-bede-c6436c6c7c07",
+                            ConcurrencyStamp = "df133075-acf9-4de2-b2e3-088866aae713",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "fad02871-78c3-4d1c-80fa-87a0a4295c4a",
+                            ConcurrencyStamp = "683cd9a4-be0c-4b9c-9473-f19889775a2f",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "4bf3403e-1e5b-4152-a73e-630e437cd887",
+                            ConcurrencyStamp = "af5efe3f-9d77-47ee-9536-1f8afb5ae078",
                             Name = "courier",
                             NormalizedName = "COURIER"
                         });

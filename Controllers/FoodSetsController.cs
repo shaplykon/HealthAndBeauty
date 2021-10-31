@@ -2,10 +2,12 @@
 using HealthAndBeauty.Models;
 using HealthAndBeauty.Models.OrderModels;
 using HealthAndBeauty.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.WebPages.Html;
@@ -18,12 +20,15 @@ namespace HealthAndBeauty.Controllers
         private FoodSetsRepository _foodSetsRepository;
         private UserManager<IdentityUser> _userManager;
         private GoogleMapsRepository _googleMapsRepository;
+        private IWebHostEnvironment webHostEnvironment;
 
         public FoodSetsController(FoodSetsRepository foodSetsRepository,
             OrdersRepository ordersRepository,
             UserManager<IdentityUser> userManager,
-            GoogleMapsRepository googleMapsRepository)
+            GoogleMapsRepository googleMapsRepository,
+            IWebHostEnvironment _webHostEnvironment)
         {
+            webHostEnvironment = _webHostEnvironment;
             _ordersRepository = ordersRepository;
             _foodSetsRepository = foodSetsRepository;
             _userManager = userManager;
@@ -50,11 +55,30 @@ namespace HealthAndBeauty.Controllers
             if (ModelState.IsValid)
             {
                 FoodSet foodSet = (FoodSet)foodSetViewModel;
-                foodSet.Ingredients = foodSetViewModel.Ingredients;
+                foodSet.ImageData = UploadedFile(foodSetViewModel);
                 _foodSetsRepository.AddFoodSet(foodSet);
             }
             return RedirectToAction("Edit");
         }
+
+        private string UploadedFile(FoodSetViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.ImageData != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/foodSets");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageData.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ImageData.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
+
         [HttpPost]
         public IActionResult CommentAdd(Comment comment, int foodSetId)
         {

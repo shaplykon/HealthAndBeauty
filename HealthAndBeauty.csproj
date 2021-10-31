@@ -41,4 +41,8 @@
     <None Include="wwwroot\service-worker.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\foodSets\" />
+  </ItemGroup>
+
 </Project>

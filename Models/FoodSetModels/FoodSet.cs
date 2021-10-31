@@ -16,5 +16,6 @@ namespace HealthAndBeauty.Models
         [Column("description")]
         public string Description { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
+        public string ImageData { get; set; }
     }
 }

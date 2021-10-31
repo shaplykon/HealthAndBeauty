@@ -1,11 +1,8 @@
 ﻿using HealthAndBeauty.Models;
-
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace HealthAndBeauty.Data.Repositories
 {
@@ -20,12 +17,7 @@ namespace HealthAndBeauty.Data.Repositories
 
         public List<FoodSet> GetFoodSetsList()
         {
-            List<FoodSet> foodSets = context.FoodSets.ToList();
-
-            foreach(FoodSet foodSet in foodSets)
-            {
-                foodSet.Ingredients = context.Ingredients.Where(ingredient => ingredient.FoodSet.Id == foodSet.Id).ToList();
-            }
+            List<FoodSet> foodSets = context.FoodSets.Include(foodSet => foodSet.Ingredients).ToList();
             return foodSets;
         }
 
@@ -37,26 +29,19 @@ namespace HealthAndBeauty.Data.Repositories
 
         internal FoodSet GetFoodSetsById(int id)
         {
-            var foodSet = context.FoodSets.Where(set => set.Id == id).FirstOrDefault();
-            foodSet.Ingredients = context.Ingredients.Where(ingredient => ingredient.FoodSet.Id == id).ToList();
+            var foodSet = context.FoodSets.Where(set => set.Id == id).Include(foodSet => foodSet.Ingredients).FirstOrDefault();
             return foodSet;
         }
 
         internal bool IsInShoppingCart(Guid userId, int id)
         {
             IQueryable<ShoppingCart> shoppingCartItem = context.ShoppingCarts.Where(x => x.FoodSetId == id && x.UserId == userId);
-            if (shoppingCartItem.Count() == 0) return false;
-            else return true;
+            return shoppingCartItem.Count() != 0;
         }
 
         internal List<Comment> GetCommentBySetId(int setId)
         {
             var commentsList = context.Comments.Where(comment => comment.FoodSetId == setId).ToList();
-
-            foreach(Comment comment in commentsList)
-            {
-                
-            }
             return commentsList;
         }
 

@@ -1,4 +1,5 @@
 ﻿using HealthAndBeauty.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,11 @@ namespace HealthAndBeauty.ViewModels
         public string Description { get; set; }
 
         public List<Ingredient> Ingredients { get; set; }
+
+        [Required(ErrorMessage = "Please choose image")]
+        [Display(Name = "Food set Picture")]
+        public IFormFile ImageData { get; set; }
+
 
         public static explicit operator FoodSet(FoodSetViewModel viewModel)
         {
@@ -39,7 +45,10 @@ namespace HealthAndBeauty.ViewModels
                         foodSet.Ingredients.Add(ingredient);
                 }
             }
-
+            if (viewModel.ImageData != null)
+            {
+                foodSet.ImageData = viewModel.ImageData.FileName;
+            }
             return foodSet;
         }
     }

@@ -5,7 +5,7 @@
 @inject Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager;
 
 @{
-    ViewData["Title"] = ""; //ViewBag.sneakers.Company + ViewBag.sneakers.Model;
+    ViewData["Title"] = ViewBag.FoodSet.Name;
 }
 <h1>@ViewBag.FoodSet.Name</h1>
 <div class="row">
@@ -33,7 +33,7 @@
 </div>
 
 
-<img class="img-thumbnail detail-img" src="https://cdn.scope.city/d/OX/Ly/6Va5DtZPDS6EO6s3YNjrk3rhDA30.jpg?w=380&amp;h=180" /> <!--"~/images/sneakers/ViewBag.sneakers.ImageData" -->
+<div class="image"><img src="~/images/foodSets/@ViewBag.FoodSet.ImageData" alt="ls-sample1" /></div>
 <!--<h4>Price: ViewBag.FoodSet.Price$</h4>-->
 <article>Description: @ViewBag.FoodSet.Description</article>
 
@@ -54,7 +54,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label" asp-for="ShortDescription"></label>
         <div class="col-sm-6">
-            <input type="text" class="form-control " asp-for="ShortDescription"/>
+            <input type="text" class="form-control " asp-for="ShortDescription" />
         </div>
         <span asp-validation-for="ShortDescription"></span>
     </div>
