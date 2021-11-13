@@ -25,7 +25,7 @@ namespace HealthAndBeauty
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(opt =>opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddRepositories();
 
@@ -51,7 +51,13 @@ namespace HealthAndBeauty
             services.AddControllersWithViews();
 
             services.AddMvc();
-            services.AddProgressiveWebApp(manifestFileName:"manifest.webmanifest");
+            services.AddProgressiveWebApp(
+                options: new WebEssentials.AspNetCore.Pwa.PwaOptions
+                {
+                    RoutesToPreCache = "/BodyCalculator, /",
+                    OfflineRoute="/offline.html"
+                }, 
+                manifestFileName:"manifest.webmanifest");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

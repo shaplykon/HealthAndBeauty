@@ -20,7 +20,7 @@ namespace HealthAndBeauty.ViewModels
         public List<Ingredient> Ingredients { get; set; }
 
         [Required(ErrorMessage = "Please choose image")]
-        [Display(Name = "Food set Picture")]
+        [Display(Name = "NutritionInfo set Picture")]
         public IFormFile ImageData { get; set; }
 
 

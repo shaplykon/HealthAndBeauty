@@ -1,0 +1,44 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/jquery-ui.css">
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+
+        $(function () {
+            $("#product").autocomplete({
+                 source: function (request, response) {
+                     $.ajax({
+                         type: "POST",
+                         url: "/CalorificCalculator/GetAutocompleteSuggestion?product=" + document.getElementById("product").value,
+                         dataType: "json",
+                         error: function (xhr, textStatus, errorThrown) {
+                             alert('Error: ' + xhr.responseText);
+                         },
+                         success: function (data) {
+                             response(data);
+                         }
+                     });
+                 },
+                minLength: 2
+  
+            });
+        });
+
+ 
+
+
+    </script>
+</head>
+
+<body>
+
+    <div class="ui-widget">
+        <label for="product">Product: </label>
+        <input id="product">
+    </div>
+</body>
+</html>

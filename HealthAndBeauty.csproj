@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\service-worker.js" />
+    <None Include="wwwroot\offline.html" />
     <None Include="wwwroot\service-worker.js" />
   </ItemGroup>
 

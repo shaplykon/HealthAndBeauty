@@ -46,29 +46,7 @@ namespace HealthAndBeauty.Controllers
         {
 
             _logger.LogError("Test");
-            /*
-            string WEBSERVICE_URL = "https://trackapi.nutritionix.com/v2/natural/nutrients";
-            Foods foodsArray = null;
-            string product = "egg";
-            try
-            {
-                foodsArray = await WEBSERVICE_URL
-                    .WithHeader("x-app-id", "3b7dd245")
-                    .WithHeader("x-app-key", "5ac10907fe0550c10d56c9a7db9612c5")
-                    .WithHeader("x-remote-user-id", "1")
-                    .PostJsonAsync(new { query = product }).ReceiveJson<Foods>();
-            }
-
-            /* FoodApi.GetProductCalirific("egg"); 
-
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            ViewBag.Response = string.Format($"{product} calorific: {foodsArray.info[0].Calorific}");
-            */
-
+            //var cal = NutritionixApiService.GetProductCalorific("eg");
             ViewBag.FoodSets = _foodSetsRepository.GetFoodSetsList();
 
             return View();
@@ -79,8 +57,6 @@ namespace HealthAndBeauty.Controllers
             string connectionId = _userConnectionManager.GetConnectionIdByName("admin@admin.admin");
             _notificationHub.Clients.Client(connectionId).SendAsync("Send", "");
             return View();
-
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

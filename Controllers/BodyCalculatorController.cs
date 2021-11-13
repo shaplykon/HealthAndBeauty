@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HealthAndBeauty.Controllers
 {
-    public class CalculatorController : Controller
+    public class BodyCalculatorController : Controller
     {
-        public IActionResult BodyCalculatorIndex()
+        public IActionResult Index()
         {
             return View();
         }
