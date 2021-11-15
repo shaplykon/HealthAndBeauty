@@ -2,43 +2,124 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="~/css/jquery-ui.css">
-
-
+    <script src="~/js/calorific-calculator/calorific-calculator.js" type="text/javascript"></script>
+    <link href="~/css/calorific_calculator/calorific_calculator.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <script>
-
-        $(function () {
-            $("#product").autocomplete({
-                 source: function (request, response) {
-                     $.ajax({
-                         type: "POST",
-                         url: "/CalorificCalculator/GetAutocompleteSuggestion?product=" + document.getElementById("product").value,
-                         dataType: "json",
-                         error: function (xhr, textStatus, errorThrown) {
-                             alert('Error: ' + xhr.responseText);
-                         },
-                         success: function (data) {
-                             response(data);
-                         }
-                     });
-                 },
-                minLength: 2
-  
-            });
-        });
-
- 
-
-
-    </script>
 </head>
 
 <body>
 
-    <div class="ui-widget">
+    <h1 class="text-center">Calorific calculator</h1>
+    <h5 class="text-center">Select a query and get info about tens of thousands of foods</h5>
+
+    <div class="ui-widget text-center" style="margin: 20px">
         <label for="product">Product: </label>
         <input id="product">
     </div>
+
+    <div class="text-center">
+        <input value="Find" type="button" class="btn btn-success" onclick="getProductInfo()" />
+    </div>
+
+    <div class="row" style="margin: 20px 0px">
+
+
+        <div id="table-responsive" style="visibility: hidden">
+            <table class="table results">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Count</th>
+                        <th>Unit</th>
+                        <th>Food</th>
+                        <th>Calories</th>
+                        <th>Weight</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="product-table">
+                    <tr>
+                        <td class="tag-thumbnail">
+                            <img id="product-image">
+                        </td>
+                        <td class="ng-binding">1</td>
+                        <td><span id="product-unit"></span></td>
+                        <td>
+                            <span id="product-name"></span>
+                        </td>
+                        <td>
+                            <span id="product-calorific"></span>
+                        </td>
+                        <td>
+                            <span id="product-weight"></span><span>g</span>
+                        </td>
+                        <td>
+                            <i class="fa fa-info clickable" tooltip="Consumed at 11/15/2021 08:32 PM"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="nutrition-label" class="ng-isolate-scope col-md-4" style="visibility: hidden">
+            <div>
+                <div class="label-container">
+                    <div>
+                        <div itemscope="" class="nutritionLabel" style=" width: 280px;">
+                            <div class="title" tabindex="0">Nutrition Facts</div>
+                            <div class="headerSpacer"></div>
+                            <div class="bar1"></div>
+                            <div class="line m" tabindex="0"><strong>Amount Per Serving</strong></div>
+                            <div class="line">
+                                <div class="" tabindex="0">
+                                    <strong>Calories</strong> <span id="calories"></span>
+                                </div>
+                            </div>
+                            <div class="bar2"></div>
+                            <div class="line ar "><strong>% Daily Value<sup>*</sup></strong></div>
+                            <div class="line" tabindex="0">
+                                <div class="dv" aria-hidden="true"><strong id="fat-norm"></strong>%</div>
+                                <strong>Total Fat</strong> <span id="total-fat"></span><span>g</span>
+                            </div>
+                            <div class="line indent" tabindex="0">
+                                <div class="dv" aria-hidden="true"><strong id="saturated-fat-norm"></strong>%</div>
+                                Saturated Fat <span id="saturated-fat"></span><span>g</span>
+                            </div>
+                            <div class="line" tabindex="0">
+                                <div class="dv" aria-hidden="true"><strong id="cholesterol-norm"></strong>%</div>
+                                <strong>Cholesterol</strong> <span id="cholesterol"></span><span>mg</span>
+                            </div>
+                            <div class="line" tabindex="0">
+                                <div class="dv" aria-hidden="true"><strong id="sodium-norm"></strong>%</div>
+                                <strong>Sodium</strong> <span id="sodium"></span><span>mg</span>
+                            </div>
+                            <div class="line" tabindex="0">
+                                <div class="dv" aria-hidden="true"><strong id="potassium-norm"></strong>%</div>
+                                <strong>Potassium</strong> <span id="potassium"></span><span>mg</span>
+                            </div>
+                            <div class="line" tabindex="0">
+                                <strong>Total Carbohydrates</strong> <span id="carbohydrate"></span><span>g</span>
+                            </div>
+                            <div class="line" tabindex="0">
+                                <strong>Protein</strong> <span id="protein"></span><span>g</span>
+                            </div>
+                            <div class="bar1"></div>
+                            <div class="dvCalorieDiet line">
+                                <div class="calorieNote">
+                                    <span tabindex="0"><span class="star" aria-hidden="true">*</span> Percent Daily Values are based on a 2000 calorie diet.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
 </body>
 </html>

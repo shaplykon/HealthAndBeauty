@@ -14,12 +14,15 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
-        public async Task<JsonResult> GetAutocompleteSuggestion(string product)
+        public async Task<JsonResult> GetProductCalorific(string product)
         {
-            var q = new { label = "loh", value = "loh" };
- 
-            var suggestionsList = await NutritionixApiService.GetAutocompleteProductSuggestions(product);
+            var calorific = await NutritionixApiService.GetProductCalorific(product);
+            return Json(calorific);
+        }
 
+        public async Task<JsonResult> GetAutocompleteSuggestion(string product)
+        { 
+            var suggestionsList = await NutritionixApiService.GetAutocompleteProductSuggestions(product);
             var query = from suggestion in suggestionsList.SearchResult
                         select new
                         {

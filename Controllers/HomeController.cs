@@ -46,7 +46,6 @@ namespace HealthAndBeauty.Controllers
         {
 
             _logger.LogError("Test");
-            //var cal = NutritionixApiService.GetProductCalorific("eg");
             ViewBag.FoodSets = _foodSetsRepository.GetFoodSetsList();
 
             return View();

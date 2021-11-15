@@ -1,0 +1,105 @@
+﻿product-image{
+    height: 150px;
+}
+
+.nf, .nutritionLabel {
+    width: auto !important;
+}
+
+
+
+.nutritionLabel {
+    font-size: 90%;
+    margin-bottom: 1.1em;
+    padding: .68em;
+    color: #333;
+    font-family: Arial,Helvetica,sans-serif;
+    border: 2px solid #000;
+    line-height: normal;
+}
+
+    .nutritionLabel .title {
+        line-height: .83em;
+        font-size: 2.7em;
+        padding-bottom: 4px;
+        font-family: 'Archivo Black';
+        white-space: nowrap;
+        letter-spacing: -2px;
+    }
+
+    .nutritionLabel .bar1 {
+        height: 10px;
+        line-height: 0;
+        font-size: 1px;
+        background: #333;
+        margin-top: 3px;
+    }
+
+    .nutritionLabel .line {
+        border-top: 1px solid #333;
+        padding: 1px 0;
+    }
+
+    .nutritionLabel .m {
+        font-size: .9em;
+    }
+    .nutritionLabel .fr {
+        float: right;
+    }
+    .nutritionLabel .ar {
+        text-align: right;
+    }
+    .nutritionLabel .bar2 {
+        height: 5px;
+        line-height: 0;
+        font-size: 1px;
+        background: #333;
+    }
+
+    .nutritionLabel .dv {
+        float: right;
+    }
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+}
+
+.nutritionLabel .line {
+    border-top: 1px solid #333;
+    padding: 1px 0;
+}
+
+    .nutritionLabel .line.indent {
+        margin-left: 15px;
+    }
+
+
+.table-responsive {
+    overflow-x: auto;
+    min-height: .01%;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.clickable {
+    cursor: pointer;
+}
