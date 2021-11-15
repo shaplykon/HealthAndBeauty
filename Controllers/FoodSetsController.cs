@@ -1,10 +1,13 @@
 ﻿using HealthAndBeauty.Data.Repositories;
+using HealthAndBeauty.Hubs;
 using HealthAndBeauty.Models;
 using HealthAndBeauty.Models.OrderModels;
 using HealthAndBeauty.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,19 +23,25 @@ namespace HealthAndBeauty.Controllers
         private FoodSetsRepository _foodSetsRepository;
         private UserManager<IdentityUser> _userManager;
         private GoogleMapsRepository _googleMapsRepository;
-        private IWebHostEnvironment webHostEnvironment;
+        private IWebHostEnvironment _webHostEnvironment;
+        private IHubContext<NotificationHub> _notificationHub;
+        private ILogger<FoodSetsController> _logger;
 
         public FoodSetsController(FoodSetsRepository foodSetsRepository,
             OrdersRepository ordersRepository,
             UserManager<IdentityUser> userManager,
             GoogleMapsRepository googleMapsRepository,
-            IWebHostEnvironment _webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            ILogger<FoodSetsController> logger,
+            IHubContext<NotificationHub> notificationHub)
         {
-            webHostEnvironment = _webHostEnvironment;
+            _notificationHub = notificationHub;
+            _webHostEnvironment = webHostEnvironment;
             _ordersRepository = ordersRepository;
             _foodSetsRepository = foodSetsRepository;
             _userManager = userManager;
             _googleMapsRepository = googleMapsRepository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -67,7 +76,7 @@ namespace HealthAndBeauty.Controllers
 
             if (model.ImageData != null)
             {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images/foodSets");
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/foodSets");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageData.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -117,10 +126,18 @@ namespace HealthAndBeauty.Controllers
         }
 
         [HttpPost]
+        public IActionResult DeleteFoodSet(int Id)
+        {
+            _foodSetsRepository.DeleteFoodSetById(Id);
+            _logger.LogWarning($"Food set with Id {Id} was deleted");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
         public IActionResult DeleteComment(int commentId, int foodSetId)
         {
             _foodSetsRepository.DeleteCommentById(commentId);
-            //logger.LogWarning("Comment with Id {0} was deleted", commentId);
+            _logger.LogWarning($"Comment with Id {commentId} was deleted from food set with Id {foodSetId}");
             return RedirectToAction("Detail", new { Id = foodSetId });
         }
 
@@ -149,7 +166,7 @@ namespace HealthAndBeauty.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCart()
         {
             Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
             List<ShoppingCart> shoppingCarts = _foodSetsRepository.GetShoppingCartByUserId(userId).ToList();
@@ -167,7 +184,7 @@ namespace HealthAndBeauty.Controllers
 
             var addresses = _googleMapsRepository.GetCoordinates();
 
-            foreach(Address address in addresses)
+            foreach (Address address in addresses)
             {
                 addressesList.Add(new SelectListItem
                 {
@@ -176,10 +193,12 @@ namespace HealthAndBeauty.Controllers
                 });
             }
 
+            var user = await _userManager.GetUserAsync(User);
+
             ViewBag.totalPrice = totalPrice;
             ViewBag.FoodSets = foodSets;
             ViewBag.Addresses = addressesList;
-
+            ViewBag.Phone = await _userManager.GetPhoneNumberAsync(user);
             OrderViewModel orderViewModel = new OrderViewModel { IsCash = true, IsDelivery = true };
 
             return View(orderViewModel);
@@ -202,7 +221,8 @@ namespace HealthAndBeauty.Controllers
                     UserId = userId,
                     IsCash = orderViewModel.IsCash,
                     IsDelivery = orderViewModel.IsDelivery,
-                    Address = orderViewModel.IsDelivery ? orderViewModel.Address : addressName
+                    Address = orderViewModel.IsDelivery ? orderViewModel.Address : addressName,
+                    PhoneNumber = orderViewModel.PhoneNumber
                 });
 
                 List<int> orderItemsIds = new List<int>();
@@ -224,10 +244,11 @@ namespace HealthAndBeauty.Controllers
                         _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetsId);
                     }
 
+                    _notificationHub.Clients.Group("Managers").SendAsync("Send", $"New order with ID {orderId} was added!");
                     // TODO: implement sending of order confirmation message
                 }
             }
-           
+
             return RedirectToAction("ShoppingCart");
         }
     }

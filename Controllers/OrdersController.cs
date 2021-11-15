@@ -17,7 +17,7 @@ namespace HealthAndBeauty.Controllers
         OrdersRepository ordersRepository;
         UserManager<IdentityUser> userManager;
         IHubContext<NotificationHub> notificationHub;
-        private readonly IUserConnectionManager userConnectionManager;
+        readonly IUserConnectionManager userConnectionManager;
 
         public OrdersController(
                     OrdersRepository _ordersRepository,

@@ -75,5 +75,11 @@ namespace HealthAndBeauty.Data.Repositories
             return context.ShoppingCarts.Where(cart => cart.UserId == userId).ToList();
         }
 
+        internal void DeleteFoodSetById(int Id)
+        {
+            context.FoodSets.Remove(context.FoodSets.Where(foodSet => foodSet.Id == Id).FirstOrDefault());
+            context.SaveChanges();
+        }
+
     }
 }

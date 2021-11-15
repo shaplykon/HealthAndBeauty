@@ -44,10 +44,7 @@ namespace HealthAndBeauty.Controllers
 
         public async Task<ActionResult> Index()
         {
-
-            _logger.LogError("Test");
             ViewBag.FoodSets = _foodSetsRepository.GetFoodSetsList();
-
             return View();
         }
 

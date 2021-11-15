@@ -14,7 +14,7 @@ namespace HealthAndBeauty.ViewModels
         public bool IsDelivery { get; set; }
 
         public string Address { get; set; }
-
+        public string PhoneNumber { get; set; }
         public string AddressName { get; set; }
 
         public static explicit operator Order(OrderViewModel viewModel)

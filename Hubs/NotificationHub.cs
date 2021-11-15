@@ -22,6 +22,11 @@ namespace HealthAndBeauty.Hubs
         public override Task OnConnectedAsync()
         {
             userConnectionManager.ConnectUser(Context.User.Identity.Name, Context.ConnectionId);
+            if (Context.User.IsInRole("manager"))
+            {
+                Groups.AddToGroupAsync(Context.ConnectionId, "Managers");
+            }
+    
             return base.OnConnectedAsync();
         }
 

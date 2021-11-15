@@ -1,5 +1,4 @@
-﻿
-function showNotification(title, options) {
+﻿function showNotification(title, options) {
     if (!("Notification" in window)) {
         alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
     }
@@ -32,12 +31,10 @@ $(document).ready(function () {
     hubConnection.on('Send', function (message) {
         showNotification("HealthAndBeauty notification", {
             body: message,
-            icon: src = "https://mir-s3-cdn-cf.behance.net/project_modules/1400/4e483087953183.5dc80d7a56dbc.png",
+            icon: src = "https://kartinkin.net/uploads/posts/2021-07/thumbs/1627115474_22-kartinkin-com-p-ovoshchi-tekstura-krasivo-24.jpg",
             dir: 'auto'
         });
     });
 
     hubConnection.start();
-
-
 });

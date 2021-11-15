@@ -39,14 +39,9 @@
                                         <div class="d-flex justify-content-between">
                                             <div>
                                                 <p class="mb-3 text-muted text-uppercase small">Set name: @foodSet.Name</p>
-                                                <!--<p class="mb-2 text-muted text-uppercase small">Model: foodSet.Model</p>-->
-                                                <!--<p class="mb-3 text-muted text-uppercase small">Release date: foodSet.ReleaseDate.ToShortDateString()</p>-->
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <!--<a class="card-link-secondary small text-uppercase mr-3" asp-controller="FoodSets" asp-action="DeleteFromShoppingCart" asp-route-="sneakers.Id">Detail</a>-->
-                                            </div>
                                             <p class="mb-0"><span><strong>100$</strong></span></p>
                                         </div>
                                     </div>
@@ -143,9 +138,13 @@
                                     </div>
                                 </div>
 
+                                <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Customer</strong></span> info</h6>
 
+                                <label asp-for="PhoneNumber" id="phoneInputLabel">Phone</label>
+                                <input asp-for="PhoneNumber" type="text" id="phoneInput" value="@ViewBag.Phone"/>
 
                                 <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Delivery</strong></span> options</h6>
+
                                 <fieldset id="delivery-group">
                                     <div>
                                         @Html.RadioButtonFor(model => model.IsDelivery, true, new { id = "IsDelivery_true" })
@@ -163,7 +162,7 @@
                                 </div>
 
                                 <div id="pickupAddressForm" class="pickup-address-form hidden">
-                                    @Html.DropDownListFor(model => model.AddressName, new SelectList(ViewBag.Addresses, "Text", "Text"), "", new {@id = "AddressId" })
+                                    @Html.DropDownListFor(model => model.AddressName, new SelectList(ViewBag.Addresses, "Text", "Text"), "", new { @id = "AddressId" })
 
                                     <div id="MapDiv" class="map-container-small"> </div>
 
