@@ -2,32 +2,29 @@
 
 
 function bindCourier() {
-    var courierId = document.getElementById("CourierId").value;
-
-
     $.ajax({
-        url: '/Orders/BindCourier/' + orderId + '/' + courierId,
+        url: '/Orders/BindCourier/' + orderId + '/' + document.getElementById("CourierId").value,
         type: 'POST'
     });
 }
 
 
 window.onload = () => {
-
-    // Get the modal
     var modal = document.getElementById("myModal");
     modal.display = "none";
-    // Get the button that opens the modal
-    var btn = document.getElementById("setCourier");
+    var buttons = document.getElementsByName("setCourier");
 
-    // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
 
-    // When the user clicks on the button, open the modal
-    btn.onclick = function (event) {
-        modal.style.display = "block";
-        orderId = event.currentTarget.parentNode.parentNode.getElementsByClassName("id")[0].innerHTML;
+    for (i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = function (event) {
+            modal.style.display = "block";
+            orderId = event.currentTarget.parentNode.parentNode.getElementsByClassName("id")[0].innerHTML;
+        }
     }
+
+    // When the user clicks on the button, open the modal
+
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {

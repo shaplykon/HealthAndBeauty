@@ -18,6 +18,10 @@ namespace HealthAndBeauty.Data.Repositories
         internal List<Order> GetOrders() => 
              context.Orders.ToList();
 
+        internal List<Order> GetOrdersByCourierId(Guid courierId) =>
+            context.Orders.Where(order => order.CourierId == courierId).ToList();
+        
+
         internal int AddOrderItems(OrderItem orderItem)
         {
             context.OrderItems.Add(orderItem);

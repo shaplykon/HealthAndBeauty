@@ -1,5 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> userManager
+
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
@@ -16,7 +20,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand brand"  asp-area="" asp-controller="Home" asp-action="Index">HealthAndBeauty</a>
+                <a class="navbar-brand brand" asp-area="" asp-controller="Home" asp-action="Index">HealthAndBeauty</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -57,29 +61,35 @@
                                     <a class="nav-link  header-link text-info" asp-area="" asp-controller="FoodSets" asp-action="ShoppingCart">Shopping cart</a>
                                 </li>
                             }
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+                            else if (User.IsInRole("courier"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link  header-link text-info" asp-area="" asp-controller="Orders" asp-action="CourierOrders" asp-route-courierId="@userManager.GetUserId(User)">Orders</a>
+                                </li>
+                                }
+                                }
+                            </ul>
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - HealthAndBeauty - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2021 - HealthAndBeauty - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+            @await RenderSectionAsync("Scripts", required: false)
+        </body>
+    </html>

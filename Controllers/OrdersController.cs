@@ -2,6 +2,7 @@
 using HealthAndBeauty.Hubs;
 using HealthAndBeauty.Models;
 using HealthAndBeauty.Services.UserConnections;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -30,6 +31,8 @@ namespace HealthAndBeauty.Controllers
             userManager = _userManager;
             ordersRepository = _ordersRepository;
         }
+
+        [Authorize(Roles = "admin, manager")]
         public IActionResult Index()
         {
             var couriersList = new List<SelectListItem>();
@@ -45,6 +48,13 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin, manager, courier")]
+        public IActionResult CourierOrders(Guid courierId)
+        {
+            ViewBag.Orders = ordersRepository.GetOrdersByCourierId(courierId);           
+            return View();
+        }
+
         [HttpPost]
         [Route("Orders/BindCourier/{orderId}/{courierId}")]
         public async Task<ActionResult> BindCourier(string orderId, string courierId)
@@ -57,9 +67,9 @@ namespace HealthAndBeauty.Controllers
             ordersRepository.UpdateOrder(order);
 
             await notificationHub.Clients.Client(userConnectionManager.GetConnectionIdByName(courier.UserName)).
-                SendAsync("Send", "You have been assigned a new client");
+                SendAsync("Send", "You have been assigned a new order");
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Orders");
         }
     }
 }
