@@ -46,7 +46,9 @@
 </div>
 
 
-<div class="image"><img src="~/images/foodSets/@ViewBag.FoodSet.ImageData" alt="ls-sample1" /></div>
+<div class="image">
+    <img class="product-image" src="~/images/foodSets/@ViewBag.FoodSet.ImageData" alt="Set photo" />
+</div>
 <!--<h4>Price: ViewBag.FoodSet.Price$</h4>-->
 <h5>Description:</h5>
 <p>@ViewBag.FoodSet.Description</p>
@@ -63,81 +65,85 @@
 
 <h5>Comments:</h5>
 
-
-<form asp-controller="FoodSets" asp-action="CommentAdd" method="post" style="margin-top:20px;">
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" asp-for="ShortDescription"></label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control " asp-for="ShortDescription" />
-        </div>
-        <span asp-validation-for="ShortDescription"></span>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" asp-for="Text"></label>
-        <div class="col-sm-6">
-            <textarea class="form-control " asp-for="Text"></textarea>
-        </div>
-        <span asp-validation-for="Text"></span>
-    </div>
-
-
-
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-6">
-            <input id="load" type="submit" class="form-control" value="Send comment" asp-route-foodSetId="@ViewBag.FoodSet.Id" asp-controller="FoodSets" asp-action="CommentAdd">
-        </div>
-    </div>
-
-</form>
-
-@if (ViewBag.Comments.Count != 0)
-{
-    <div class="col">
-        <h4>Comments: @ViewBag.Comments.Count</h4>
-    </div>
-
-    foreach (Comment comment in ViewBag.Comments)
+@{ if (User.Identity.IsAuthenticated)
     {
-        <div class="row">
+        <form asp-controller="FoodSets" asp-action="CommentAdd" method="post" style="margin-top:20px;">
 
-            <div class="media-block" style="margin-top:10px; margin-bottom:10px;">
-                <a class="media-left"><img class="img-circle img-sm" style="width:50px; height:50px" alt="Профиль пользователя" src="https://bootstraptema.ru/snippets/icons/2016/mia/1.png"></a>
-                <div class="media-body">
-                    <div class="mar-btm">
-                        <a class="btn-link text-semibold media-heading box-inline">User: @userManager.FindByIdAsync(comment.UserId.ToString()).Result.UserName</a>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" asp-for="ShortDescription"></label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control " asp-for="ShortDescription" />
+                </div>
+                <span asp-validation-for="ShortDescription"></span>
+            </div>
 
-                        <p name="commentDateTime" class="text-muted text-sm" style="margin:0 !important">
-                            @comment.Date.ToString("yyyy-MM-dd HH:mm:ss")
-                        </p>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" asp-for="Text"></label>
+                <div class="col-sm-6">
+                    <textarea class="form-control " asp-for="Text"></textarea>
+                </div>
+                <span asp-validation-for="Text"></span>
+            </div>
 
-                        <script>
-                            var convertDate = document.getElementsByName('commentDateTime')[document.getElementsByName('commentDateTime').length - 1].innerText;
-                            setConvertedDate(convertDate);
-                        </script>
 
-                        <h4>@comment.ShortDescription</h4>
-                    </div>
-                    <p>@comment.Text</p>
 
-                    @{ if (User.Identity.IsAuthenticated && (comment.UserId.ToString() == userManager.GetUserId(User) || User.IsInRole("admin") || User.IsInRole("manager")))
-                        {
-                            <form method="post" asp-controller="FoodSets" asp-action="DeleteComment" asp-route-foodSetId="@ViewBag.FoodSet.Id" asp-route-commentId="@comment.Id">
-                                <input type="submit" value="Delete" class="btn btn-danger">
-                            </form>
-                        }
-                    }
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input id="load" type="submit" class="form-control" value="Send comment" asp-route-foodSetId="@ViewBag.FoodSet.Id" asp-controller="FoodSets" asp-action="CommentAdd">
                 </div>
             </div>
 
-        </div>
+        </form>
 
+        }
     }
 
-}
-else
-{
-    <p>There are no comments for this product yet. Be the first!</p>
-}
+    @if (ViewBag.Comments.Count != 0)
+    {
+        <div class="col">
+            <h4>Comments: @ViewBag.Comments.Count</h4>
+        </div>
+
+        foreach (Comment comment in ViewBag.Comments)
+        {
+            <div class="row">
+
+                <div class="media-block" style="margin-top:10px; margin-bottom:10px;">
+                    <a class="media-left"><img class="img-circle img-sm" style="width:50px; height:50px" alt="Профиль пользователя" src="https://bootstraptema.ru/snippets/icons/2016/mia/1.png"></a>
+                    <div class="media-body">
+                        <div class="mar-btm">
+                            <a class="btn-link text-semibold media-heading box-inline">User: @userManager.FindByIdAsync(comment.UserId.ToString()).Result.UserName</a>
+
+                            <p name="commentDateTime" class="text-muted text-sm" style="margin:0 !important">
+                                @comment.Date.ToString("yyyy-MM-dd HH:mm:ss")
+                            </p>
+
+                            <script>
+                                var convertDate = document.getElementsByName('commentDateTime')[document.getElementsByName('commentDateTime').length - 1].innerText;
+                                setConvertedDate(convertDate);
+                            </script>
+
+                            <h4>@comment.ShortDescription</h4>
+                        </div>
+                        <p>@comment.Text</p>
+
+                        @{ if (User.Identity.IsAuthenticated && (comment.UserId.ToString() == userManager.GetUserId(User) || User.IsInRole("admin") || User.IsInRole("manager")))
+                            {
+                                <form method="post" asp-controller="FoodSets" asp-action="DeleteComment" asp-route-foodSetId="@ViewBag.FoodSet.Id" asp-route-commentId="@comment.Id">
+                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                </form>
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+    }
+    else
+    {
+        <p>There are no comments for this product yet. Be the first!</p>
+    }

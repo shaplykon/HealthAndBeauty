@@ -39,10 +39,14 @@ namespace HealthAndBeauty
 
             services.AddDefaultIdentity<IdentityUser>(options => 
             { 
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.User.RequireUniqueEmail = true;            
+                options.Password.RequiredLength = 4;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true; 
+                
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

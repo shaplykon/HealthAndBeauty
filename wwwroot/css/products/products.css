@@ -24,3 +24,8 @@
             transform-origin: bottom left;
             transform: rotate(45deg);
         }
+
+.product-image {
+    width: 80%;
+    margin: 10px 0px 10px 0px;
+}

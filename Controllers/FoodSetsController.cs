@@ -57,7 +57,6 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
-
         [HttpPost]
         public IActionResult Edit(FoodSetViewModel foodSetViewModel)
         {
@@ -125,6 +124,7 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost]
         public IActionResult DeleteFoodSet(int Id)
         {
@@ -133,6 +133,7 @@ namespace HealthAndBeauty.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost]
         public IActionResult DeleteComment(int commentId, int foodSetId)
         {

@@ -16,7 +16,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HealthAndBeauty</a>
+                <a class="navbar-brand brand"  asp-area="" asp-controller="Home" asp-action="Index">HealthAndBeauty</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,37 +24,37 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="AboutUs">About us</a>
+                            <a class="nav-link text-dark header-link" asp-area="" asp-controller="AboutUs" asp-action="AboutUs">About us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="BodyCalculator" asp-action="Index">Body calculator</a>
+                            <a class="nav-link text-dark header-link" asp-area="" asp-controller="BodyCalculator" asp-action="Index">Body calculator</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CalorificCalculator" asp-action="Index">Calorific calculator</a>
+                            <a class="nav-link text-dark header-link" asp-area="" asp-controller="CalorificCalculator" asp-action="Index">Calorific calculator</a>
                         </li>
                         @{
                             if (User.IsInRole("admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-important" asp-area="" asp-controller="Manage" asp-action="Index">Roles managment</a>
+                                    <a class="nav-link header-link text-important" asp-area="" asp-controller="Manage" asp-action="Index">Roles managment</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-info" asp-area="" asp-controller="FoodSets" asp-action="Edit">Products managment</a>
+                                    <a class="nav-link header-link text-info" asp-area="" asp-controller="FoodSets" asp-action="Edit">Products managment</a>
                                 </li>
                             }
                             else if (User.IsInRole("manager"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-info" asp-area="" asp-controller="FoodSets" asp-action="Edit">Products managment</a>
+                                    <a class="nav-link header-link text-info" asp-area="" asp-controller="FoodSets" asp-action="Edit">Products managment</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-important" asp-area="" asp-controller="Orders" asp-action="Index">Orders managment</a>
+                                    <a class="nav-link header-link text-important" asp-area="" asp-controller="Orders" asp-action="Index">Orders managment</a>
                                 </li>
                             }
                             else if (User.IsInRole("user"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-info" asp-area="" asp-controller="FoodSets" asp-action="ShoppingCart">Shopping cart</a>
+                                    <a class="nav-link  header-link text-info" asp-area="" asp-controller="FoodSets" asp-action="ShoppingCart">Shopping cart</a>
                                 </li>
                             }
                         }
