@@ -23,7 +23,6 @@
 }
 
 $(document).ready(function () {
-    document.getElementById('notP').innerHTML = window.Notification.permission;
 
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/notification")
