@@ -32,7 +32,7 @@ namespace HealthAndBeauty
             services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
-            services.AddSignalR();
+            services.AddSignalR().AddAzureSignalR("Endpoint=https://hb-notification.service.signalr.net;AccessKey=JegWI1Py0BuzvpV3WVXuTANKcUwmC8g17tkBmztjpDU=;Version=1.0;");
 
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -85,7 +85,7 @@ namespace HealthAndBeauty
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseFileServer();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
