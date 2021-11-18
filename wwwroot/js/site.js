@@ -1,5 +1,4 @@
 ﻿function showNotification(title, options) {
-    var notification = new window.Notification(title, options);
     if (!("Notification" in window)) {
         alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
     }
