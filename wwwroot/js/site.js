@@ -1,20 +1,9 @@
-﻿function checkNotificationPromise() {
-    try {
-        Notification.requestPermission().then();
-    } catch (e) {
-        return false;
-    }
-
-    return true;
-}
-
-
-function showNotification(title, options) {
-    var notification = new Notification(title, options);
+﻿function showNotification(title, options) {
+    var notification = new window.Notification(title, options);
     if (!("Notification" in window)) {
         alert('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
     }
-    else if (Notification.permission === "granted") {
+    else if (window.Notification.permission === "granted") {
         var notification = new window.Notification(title, options);
         function clickFunc() {
             window.open("/");
@@ -22,17 +11,17 @@ function showNotification(title, options) {
         notification.onclick = clickFunc;
     }
 
-    else if (Notification.permission !== 'denied') {
-        Notification.requestPermission.then((permission) => {
+    else if (window.Notification.permission !== 'denied') {
+        window.Notification.requestPermission(function (permission) {
             if (permission === "granted") {
                 var notification = new window.Notification(title, options);
             } else {
                 alert('Вы запретили показывать уведомления');
             }
-        });
+        }
+        );
     }
 }
-
 
 $(document).ready(function () {
     document.getElementById('notP').innerHTML = window.Notification.permission;
