@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover" style="width: 110% !important">
         <thead>
             <tr>
                 <th scope="col">№</th>
@@ -39,56 +39,57 @@
                 <th scope="col">Timer</th>
                 <th scope="col">Status</th>
                 <th scope="col">Сourier</th>
-                <th scope="col">Payment</th>
+                <th scope="col">Payment details</th>
                 <th scope="col">Delivery</th>
+                <th scope="col">Address</th>
                 <th scope="col">Phone</th>
-
             </tr>
         </thead>
 
         <tbody>
             @foreach (Order order in ViewBag.Orders)
             {
-                <tr>
-                    <th scope="row" class="id">@order.Id</th>
-                    <!--<d class="ms">@order.ReceiptDate.Ticks</td>-->
+            <tr>
+                <th scope="row" class="id">@order.Id</th>
+                <!--<d class="ms">@order.ReceiptDate.Ticks</td>-->
 
-                    <td>@userManager.FindByIdAsync(order.UserId.ToString()).Result.UserName</td>
+                <td>@userManager.FindByIdAsync(order.UserId.ToString()).Result.UserName</td>
 
-                    <td class="date-row">@order.ReceiptDate.ToShortDateString()</td>
-                    <td class="time-row">@order.ReceiptDate.ToLongTimeString()</td>
-                    <td class="timer-row"></td>
-                    <td>@order.Status</td>
-                    @if (order.CourierId.ToString() != Guid.Empty.ToString())
-                    {
-                        <td>@userManager.FindByIdAsync(order.CourierId.ToString()).Result.UserName</td>
-                    }
-                    else if (order.IsDelivery)
-                    {
-                        <td><button class="btn btn-success" value="set" id="setCourier" name="setCourier">Set</button></td>
-                    }
-                    else
-                    {
-                        <td>---</td>
-                    }
-                    @if (order.IsCash)
-                    {
-                        <td>Cash</td>
-                    }
-                    else
-                    {
-                        <td>Card</td>
-                    }
-                    @if (order.IsDelivery)
-                    {
-                        <td>Delivery</td>
-                    }
-                    else
-                    {
-                        <td>Pickup</td>
-                    }
-                    <td>@order.PhoneNumber</td>
-                </tr>
+                <td class="date-row">@order.ReceiptDate.ToShortDateString()</td>
+                <td class="time-row">@order.ReceiptDate.ToLongTimeString()</td>
+                <td class="timer-row"></td>
+                <td>@order.Status</td>
+                @if (order.CourierId.ToString() != Guid.Empty.ToString())
+                {
+                    <td>@userManager.FindByIdAsync(order.CourierId.ToString()).Result.UserName</td>
+                }
+                else if (order.IsDelivery)
+                {
+                    <td><button class="btn btn-success" value="set" id="setCourier" name="setCourier">Set</button></td>
+                }
+                else
+                {
+                    <td>---</td>
+                }
+                @if (order.IsCash)
+                {
+                    <td>---</td>
+                }
+                else
+                {
+                    <td>@order.CardNumber</td>
+                }
+                @if (order.IsDelivery)
+                {
+                    <td>Delivery</td>
+                }
+                else
+                {
+                    <td>Pickup</td>
+                }
+                <td>@order.Address</td>
+                <td>@order.PhoneNumber</td>
+            </tr>
 
             }
         </tbody>

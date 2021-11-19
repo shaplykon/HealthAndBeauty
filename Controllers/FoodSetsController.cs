@@ -209,13 +209,23 @@ namespace HealthAndBeauty.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrder(OrderViewModel orderViewModel, string addressName)
+        public async Task<IActionResult> ShoppingCart(OrderViewModel orderViewModel)
         {
+            if (orderViewModel.IsCash)            
+                ModelState.Remove("CardNumber");
+
+            if (orderViewModel.IsDelivery)
+                ModelState.Remove("PickupAddress");
+
+            else
+                ModelState.Remove("Address");
+
             if (ModelState.IsValid)
             {
                 Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
                 List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
                 List<FoodSet> foodSets = new List<FoodSet>();
+
                 var orderId = _ordersRepository.AddOrder(new Order
                 {
                     Id = 0,
@@ -225,8 +235,9 @@ namespace HealthAndBeauty.Controllers
                     UserId = userId,
                     IsCash = orderViewModel.IsCash,
                     IsDelivery = orderViewModel.IsDelivery,
-                    Address = orderViewModel.IsDelivery ? orderViewModel.Address : addressName,
-                    PhoneNumber = orderViewModel.PhoneNumber
+                    Address = orderViewModel.IsDelivery ? orderViewModel.Address : orderViewModel.PickupAddress,
+                    PhoneNumber = orderViewModel.PhoneNumber,
+                    CardNumber = orderViewModel.CardNumber.Substring(0, 4) + " **** " + orderViewModel.CardNumber.Substring(11, 4)
                 });
 
                 List<int> orderItemsIds = new List<int>();
@@ -249,13 +260,49 @@ namespace HealthAndBeauty.Controllers
                         foodSets.Add(_foodSetsRepository.GetFoodSetsById(foodSetId));
                     }
 
-                    _notificationHub.Clients.Group("Managers").SendAsync("Send", $"New order with ID {orderId} was added!");
+                    await _notificationHub.Clients.Group("Managers").SendAsync("Send", $"New order with ID {orderId} was added!");
                     var contentRootPath = HttpContext.Request.Scheme + "://" + Request.Host + "/images/foodSets/";
-                    _mailService.SendConfirmationMessage(User.Identity.Name, foodSets, contentRootPath);
+                    await _mailService.SendConfirmationMessage(User.Identity.Name, foodSets, contentRootPath);
                 }
+                return RedirectToAction("ShoppingCart");
             }
+            else
+            {
+                Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
+                List<ShoppingCart> shoppingCarts = _foodSetsRepository.GetShoppingCartByUserId(userId).ToList();
+                List<FoodSet> foodSets = new List<FoodSet>();
+                double totalPrice = 0;
 
-            return RedirectToAction("ShoppingCart");
+                foreach (ShoppingCart shoppingCart in shoppingCarts)
+                {
+                    FoodSet set = _foodSetsRepository.GetFoodSetsById(shoppingCart.FoodSetId);
+                    totalPrice += set.Price;
+                    foodSets.Add(set);
+                }
+
+                var addressesList = new List<SelectListItem>();
+
+                var addresses = _googleMapsRepository.GetCoordinates();
+
+                foreach (Address address in addresses)
+                {
+                    addressesList.Add(new SelectListItem
+                    {
+                        Value = address.AddressName,
+                        Text = address.AddressName
+                    });
+                }
+
+                var user = await _userManager.GetUserAsync(User);
+
+                ViewBag.totalPrice = totalPrice;
+                ViewBag.FoodSets = foodSets;
+                ViewBag.Addresses = addressesList;
+                ViewBag.Phone = await _userManager.GetPhoneNumberAsync(user);
+
+                return View(orderViewModel);
+            }
+            
         }
     }
 }

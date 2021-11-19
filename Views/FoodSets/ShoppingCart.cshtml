@@ -76,19 +76,20 @@
 
                             <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Payment</strong></span> options</h6>
 
-                            <form method="post" asp-controller="FoodSets" asp-action="ConfirmOrder" name="properties_form">
+                            <form method="post" asp-controller="FoodSets" asp-action="ShoppingCart" name="properties_form">
 
                                 <fieldset id="payment-group">
                                     <div>
                                         @Html.RadioButtonFor(model => model.IsCash, true, new { id = "IsCash_true" })
                                         <label for="IsCash_true">Cash</label>
                                         <br />
+                                        <span asp-validation-for="CardNumber" class="text-danger"></span>
                                         @Html.RadioButtonFor(model => model.IsCash, false, new { id = "IsCash_false" })
                                         <label for="IsCash_false">Card</label>
                                         <br />
                                     </div>
                                 </fieldset>
-
+    
                                 <div class="creditCardForm hidden" id="cardForm">
                                     <div class="payment">
 
@@ -101,8 +102,8 @@
                                             <input type="text" class="form-control" id="cvv">
                                         </div>
                                         <div class="form-group" id="card-number-field">
-                                            <label for="cardNumber">Card Number</label>
-                                            <input type="text" class="form-control" id="cardNumber">
+                                            <label asp-for="CardNumber">Card Number</label>
+                                            <input asp-for="CardNumber" type="text" inputmode="numeric" class="form-control" id="cardNumber">
                                         </div>
                                         <div class="form-group" id="expiration-date">
                                             <label>Expiration Date</label>
@@ -117,8 +118,8 @@
                                 <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Customer</strong></span> info</h6>
 
                                 <label asp-for="PhoneNumber" id="phoneInputLabel">Phone</label>
-                                <input asp-for="PhoneNumber" type="text" id="phoneInput" value="@ViewBag.Phone"/>
-
+                                <input asp-for="PhoneNumber" type="text" id="phoneInput" value="@ViewBag.Phone" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 <h6 class="mb-3" style="margin: 0 !important;"><span><strong>Delivery</strong></span> options</h6>
 
                                 <fieldset id="delivery-group">
@@ -126,6 +127,7 @@
                                         @Html.RadioButtonFor(model => model.IsDelivery, true, new { id = "IsDelivery_true" })
                                         <label for="IsDelivery_true">Delivery</label>
                                         <br />
+                                        <span asp-validation-for="PickupAddress" class="text-danger"></span>
                                         @Html.RadioButtonFor(model => model.IsDelivery, false, new { id = "IsDelivery_false" })
                                         <label for="IsDelivery_false">Pickup</label>
                                         <br />
@@ -135,11 +137,11 @@
                                 <div id="deliveryAddressForm" class="delivery-address-form">
                                     <label asp-for="Address" id="addressInputLabel"></label>
                                     <input asp-for="Address" type="text" id="addressInput" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
 
                                 <div id="pickupAddressForm" class="pickup-address-form hidden">
-                                    @Html.DropDownListFor(model => model.AddressName, new SelectList(ViewBag.Addresses, "Text", "Text"), "", new { @id = "AddressId", @class="address-select" })
-
+                                    @Html.DropDownListFor(model => model.PickupAddress, new SelectList(ViewBag.Addresses, "Text", "Text"), "", new { @id = "AddressId", @class = "address-select" })
                                     <div id="MapDiv" class="map-container-small" style="width: 100% !important;"> </div>
 
                                     <div id="info-panel">
