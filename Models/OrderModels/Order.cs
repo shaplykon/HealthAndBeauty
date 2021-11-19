@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthAndBeauty.Models
 {
     [Table("order")]
-    public class Order
+    public class Order: IValidatableObject
     {
         public int Id { get; set; }
         public Guid UserId { get; set; }

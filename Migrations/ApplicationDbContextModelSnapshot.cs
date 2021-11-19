@@ -83,6 +83,14 @@ namespace HealthAndBeauty.Migrations
                         .HasColumnName("Id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("Calorific")
+                        .HasColumnType("integer")
+                        .HasColumnName("calorific");
+
+                    b.Property<int>("DeliveryTime")
+                        .HasColumnType("integer")
+                        .HasColumnName("delivery_time");
+
                     b.Property<string>("Description")
                         .HasColumnType("text")
                         .HasColumnName("description");
@@ -93,6 +101,10 @@ namespace HealthAndBeauty.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer")
+                        .HasColumnName("price");
 
                     b.HasKey("Id");
 
@@ -235,28 +247,28 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "d7b2adcf-99d3-490c-9316-0ea4b667030a",
+                            ConcurrencyStamp = "dcd99ed5-bd2d-4e4d-bd1a-666ccdba5067",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "f6b3d10c-ac51-4d8f-9ace-23dd26d12372",
+                            ConcurrencyStamp = "a9e7b299-b495-40d9-87ea-989064c10e52",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "d6ca5b21-6e87-401b-9168-84e1f6b8fcf3",
+                            ConcurrencyStamp = "177fc378-a591-4bbe-9679-d9d1e7e6a4bb",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "8a6ab634-0c93-4c35-86ba-ab82dd7711c9",
+                            ConcurrencyStamp = "256bc2f4-6ad8-4942-8e5e-b38d139c992a",
                             Name = "courier",
                             NormalizedName = "COURIER"
                         });

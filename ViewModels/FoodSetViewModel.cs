@@ -20,10 +20,23 @@ namespace HealthAndBeauty.ViewModels
         public List<Ingredient> Ingredients { get; set; }
 
         [Required(ErrorMessage = "Please choose image")]
-        [Display(Name = "NutritionInfo set Picture")]
+        [Display(Name = "Image")]
         public IFormFile ImageData { get; set; }
 
+        [Required(ErrorMessage = "Please input price")]
+        [Display(Name = "Price")]
+        public int Price{ get; set; }
 
+        [Required(ErrorMessage = "Please input delivery time")]
+        [Display(Name = "Time")]
+        public int DeliveryTime { get; set; }
+
+        [Required(ErrorMessage = "Please input calorific")]
+        [Display(Name = "Calorific")]
+        public int Calorific
+        {
+            get; set;
+        }
         public static explicit operator FoodSet(FoodSetViewModel viewModel)
         {
             FoodSet foodSet = new FoodSet();
@@ -35,6 +48,18 @@ namespace HealthAndBeauty.ViewModels
             if (viewModel.Description != default)
             {
                 foodSet.Description = viewModel.Description;
+            }
+            if (viewModel.Price != default)
+            {
+                foodSet.Price = viewModel.Price;
+            }
+            if (viewModel.DeliveryTime != default)
+            {
+                foodSet.DeliveryTime = viewModel.DeliveryTime;
+            }
+            if (viewModel.Calorific != default)
+            {
+                foodSet.Calorific = viewModel.Calorific;
             }
             if (viewModel.Ingredients != default)
             {
@@ -49,6 +74,7 @@ namespace HealthAndBeauty.ViewModels
             {
                 foodSet.ImageData = viewModel.ImageData.FileName;
             }
+
             return foodSet;
         }
     }

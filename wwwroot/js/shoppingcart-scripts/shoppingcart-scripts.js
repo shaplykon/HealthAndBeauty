@@ -48,7 +48,6 @@ function showDeliveryForm() {
     document.getElementById("pickupAddressForm").classList.add('hidden')
     document.getElementById("MapDiv").classList.add('collapsed')
     document.getElementById("info-panel").classList.add('collapsed')
-    document.getElementById("loadingBox").classList.add('collapsed')
     document.getElementById("AddressId").classList.add('collapsed')
 
     document.getElementById("deliveryAddressForm").classList.remove('hidden')
@@ -65,14 +64,11 @@ function showPickupForm() {
     document.getElementById("pickupAddressForm").classList.remove('hidden')
     document.getElementById("MapDiv").classList.remove('collapsed')
     document.getElementById("info-panel").classList.remove('collapsed')
-    document.getElementById("loadingBox").classList.remove('collapsed')
+
     document.getElementById("AddressId").classList.remove('collapsed')
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    document.getElementById("loadingBox").classList.remove("collapsed");
-
-
     navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
@@ -99,8 +95,7 @@ function showRoute(userAddress) {
         .then((response) => {
             directionsRenderer.setDirections(response);
 
-            var legs = response.routes[0].legs;
-            document.getElementById("loadingBox").classList.add("collapsed");
+            var legs = response.routes[0].legs;         
 
             var totalDistance = 0;
             var totalDuration = 0;

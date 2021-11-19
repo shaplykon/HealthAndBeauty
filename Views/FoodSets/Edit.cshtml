@@ -17,24 +17,37 @@
             <div class="col-sm-6">
                 <input id="lat" type="text" class="form-control" asp-for="Name" />
             </div>
-            <span asp-validation-for="Name"></span>
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
+
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" asp-for="Description"></label>
             <div class="col-sm-6">
-                <input id="lon" type="text" class="form-control" asp-for="Description" />
+                <textarea id="lon" class="form-control" asp-for="Description"></textarea>
             </div>
-            <span asp-validation-for="Description"></span>
+            <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
         <div class="form-group row">
+            <label class="col-sm-1 col-form-label" asp-for=Price></label>
+            <div class="col-sm-1">
+                <input type="text" class="form-control" asp-for="Price" />
+            </div>
+            <span asp-validation-for="Price" class="text-danger"></span>
 
-            <label class="col-sm-1">Ingredients</label>
-            <button type="button" class="btn btn-success" onclick="addInput()">Add</button>
-        </div>
+            <label class="col-sm-1 col-form-label" asp-for=DeliveryTime></label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" asp-for="DeliveryTime" />
+            </div>
+            <span asp-validation-for="DeliveryTime" class="text-danger"></span>
 
-        <div id="ingredientsBlock">
 
+            <label class="col-sm-1 col-form-label" asp-for=Calorific></label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" asp-for="Calorific" />
+            </div>
+            <span asp-validation-for="Calorific" class="text-danger"></span>
+     
         </div>
 
         <div class="form-group row">
@@ -45,20 +58,10 @@
             <span asp-validation-for="ImageData" class="text-danger"></span>
         </div>
 
-
-        @{
-            <div class="form-group row ingredient-input">
-
-                <input type="hidden" asp-for="Ingredients[0].Id" />
-                <label class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-6">
-                    <input id="lon" type="text" class="form-control" asp-for="Ingredients[0].Name" />
-                </div>
-                <span asp-validation-for="Ingredients[0].Name"></span>
-            </div>
-
-
-        }
+        <div class="form-group row">
+            <label class="col-sm-1">Ingredients</label>
+            <button type="button" class="col-sm-1 btn btn-success" onclick="addInput()" style="margin: -5px 10px 10px 10px;">Add</button>
+        </div>
 
         <div id="submitButton" class="col-sm-8">
             <div class="form-group row">

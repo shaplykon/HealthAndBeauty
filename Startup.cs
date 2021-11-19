@@ -1,6 +1,7 @@
 using HealthAndBeauty.Data;
 using HealthAndBeauty.Hubs;
 using HealthAndBeauty.Services;
+using HealthAndBeauty.Services.Mail;
 using HealthAndBeauty.Services.UserConnections;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,9 +32,11 @@ namespace HealthAndBeauty
 
             services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            services.AddSingleton<IMailService, MailService>();
+
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
 
             services.AddSignalR().AddAzureSignalR("Endpoint=https://hb-notification.service.signalr.net;AccessKey=JegWI1Py0BuzvpV3WVXuTANKcUwmC8g17tkBmztjpDU=;Version=1.0;");
-
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

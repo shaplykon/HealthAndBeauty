@@ -1,8 +1,8 @@
 ﻿.loading-box {
-    position: relative;
-    width: 305px !important;
+    position: absolute;
+    width: 100% !important;
     height: 300px !important;
-    bottom: 300px;
+    bottom: 120px;
     background: black;
     opacity: 0.8;
 }
@@ -12,7 +12,7 @@
 }
 
 .delivery-address-form{
-    height:200px;
+    height:40px;
 
 }
 
@@ -32,7 +32,7 @@
     margin: 0 auto;
     overflow: hidden;
     color: #4c4e56;
-    height: 600px;
+    height: 340px;
     transition:linear 0.5s;
 }
 
@@ -58,8 +58,6 @@
     .creditCardForm .payment {
         float: left;
         font-size: 18px;
-        padding: 10px 25px;
-        margin-top: 20px;
         position: relative;
     }
 
@@ -69,14 +67,13 @@
         }
 
         .creditCardForm .payment .form-control {
-            line-height: 40px;
+            line-height: 30px;
             height: auto;
             padding: 0 16px;
         }
 
     .creditCardForm .owner {
-        width: 63%;
-        margin-right: 10px;
+        width: 100%;
     }
 
     .creditCardForm .CVV {
@@ -132,4 +129,38 @@
     .creditCardForm #credit_cards {
         text-align: left;
     }
+}
+.exp-wrapper {
+    position: relative;
+    border: 1px solid #aaa;
+    display: flex;
+    width: 150px;
+    justify-content: space-around;
+    height: 36px;
+    line-height: 36px;
+    font-size: 24px;
+    border-radius: .25rem;
+    border: 1px solid #ced4da;
+}
+
+    .exp-wrapper:after {
+        content: '/';
+        position: absolute;
+        left: 50%;
+        margin-left: -4px;
+        color: #aaa;
+    }
+
+input.exp {
+    float: left;
+    font-family: monospace;
+    border: 0;
+    width: 20px;
+    outline: none;
+    appearance: none;
+    font-size: 14px;
+}
+
+.address-select{
+    width: 100%
 }

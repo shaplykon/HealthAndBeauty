@@ -2,6 +2,7 @@
 using HealthAndBeauty.Hubs;
 using HealthAndBeauty.Models;
 using HealthAndBeauty.Models.OrderModels;
+using HealthAndBeauty.Services.Mail;
 using HealthAndBeauty.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,7 @@ namespace HealthAndBeauty.Controllers
         private IWebHostEnvironment _webHostEnvironment;
         private IHubContext<NotificationHub> _notificationHub;
         private ILogger<FoodSetsController> _logger;
+        private IMailService _mailService;
 
         public FoodSetsController(FoodSetsRepository foodSetsRepository,
             OrdersRepository ordersRepository,
@@ -33,7 +35,8 @@ namespace HealthAndBeauty.Controllers
             GoogleMapsRepository googleMapsRepository,
             IWebHostEnvironment webHostEnvironment,
             ILogger<FoodSetsController> logger,
-            IHubContext<NotificationHub> notificationHub)
+            IHubContext<NotificationHub> notificationHub,
+            IMailService mailService)
         {
             _notificationHub = notificationHub;
             _webHostEnvironment = webHostEnvironment;
@@ -42,6 +45,7 @@ namespace HealthAndBeauty.Controllers
             _userManager = userManager;
             _googleMapsRepository = googleMapsRepository;
             _logger = logger;
+            _mailService = mailService;
         }
 
         [HttpGet]
@@ -65,8 +69,10 @@ namespace HealthAndBeauty.Controllers
                 FoodSet foodSet = (FoodSet)foodSetViewModel;
                 foodSet.ImageData = UploadedFile(foodSetViewModel);
                 _foodSetsRepository.AddFoodSet(foodSet);
+                return RedirectToAction("Edit");
             }
-            return RedirectToAction("Edit");
+            return View();
+
         }
 
         private string UploadedFile(FoodSetViewModel model)
@@ -97,7 +103,6 @@ namespace HealthAndBeauty.Controllers
                 comment.Date = DateTime.Now;
                 _foodSetsRepository.AddComment(comment, foodSetId);
             }
-
             return RedirectToAction("Detail", new { Id = foodSetId });
         }
 
@@ -117,9 +122,8 @@ namespace HealthAndBeauty.Controllers
                     ViewBag.isInCart = false;
             }
             else
-            {
                 ViewBag.isInCart = false;
-            }
+
             ViewBag.Comments = _foodSetsRepository.GetCommentBySetId(Id);
             return View();
         }
@@ -160,7 +164,6 @@ namespace HealthAndBeauty.Controllers
                     UserId = userId,
                     FoodSetId = foodSetId,
                     Date = DateTime.Now,
-
                 });
             }
             return RedirectToAction("Detail", new { Id = foodSetId });
@@ -177,7 +180,7 @@ namespace HealthAndBeauty.Controllers
             foreach (ShoppingCart shoppingCart in shoppingCarts)
             {
                 FoodSet set = _foodSetsRepository.GetFoodSetsById(shoppingCart.FoodSetId);
-                totalPrice += 30;
+                totalPrice += set.Price;
                 foodSets.Add(set);
             }
 
@@ -212,7 +215,7 @@ namespace HealthAndBeauty.Controllers
             {
                 Guid userId = Guid.Parse(_userManager.GetUserId(HttpContext.User));
                 List<int> foodSetsIds = _foodSetsRepository.GetShoppingCartByUserId(userId).Select(cart => cart.FoodSetId).ToList();
-
+                List<FoodSet> foodSets = new List<FoodSet>();
                 var orderId = _ordersRepository.AddOrder(new Order
                 {
                     Id = 0,
@@ -240,13 +243,15 @@ namespace HealthAndBeauty.Controllers
 
                 if (orderId != 0 && orderItemsIds.Count != 0)
                 {
-                    foreach (int foodSetsId in foodSetsIds)
+                    foreach (int foodSetId in foodSetsIds)
                     {
-                        _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetsId);
+                        _foodSetsRepository.DeleteFromShoppingCart(userId, foodSetId);
+                        foodSets.Add(_foodSetsRepository.GetFoodSetsById(foodSetId));
                     }
 
                     _notificationHub.Clients.Group("Managers").SendAsync("Send", $"New order with ID {orderId} was added!");
-                    // TODO: implement sending of order confirmation message
+                    var contentRootPath = HttpContext.Request.Scheme + "://" + Request.Host + "/images/foodSets/";
+                    _mailService.SendConfirmationMessage(User.Identity.Name, foodSets, contentRootPath);
                 }
             }
 

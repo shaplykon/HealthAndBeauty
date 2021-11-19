@@ -1,4 +1,4 @@
-﻿function addInput() {
+﻿ function addInput() {
 
     var ingredientIndex = document.getElementsByClassName("ingredient-input").length;
     var aspAttribureString = "Ingredients[" + ingredientIndex + "].";

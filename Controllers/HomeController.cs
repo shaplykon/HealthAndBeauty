@@ -41,8 +41,7 @@ namespace HealthAndBeauty.Controllers
             _notificationHub = notificationHub;
         }
 
-
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             ViewBag.FoodSets = _foodSetsRepository.GetFoodSetsList();
             return View();

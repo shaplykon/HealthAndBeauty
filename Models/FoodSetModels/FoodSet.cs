@@ -15,6 +15,12 @@ namespace HealthAndBeauty.Models
         public string Name { get; set; }
         [Column("description")]
         public string Description { get; set; }
+        [Column("price")]
+        public int Price{ get; set; }
+        [Column("delivery_time")]
+        public int DeliveryTime{ get; set; }
+        [Column("calorific")]
+        public int Calorific { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
         public string ImageData { get; set; }
     }
