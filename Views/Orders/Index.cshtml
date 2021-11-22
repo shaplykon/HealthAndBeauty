@@ -16,8 +16,6 @@
 <body>
 
     <div id="myModal" class="modal">
-
-        <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
 
@@ -32,11 +30,9 @@
         <thead>
             <tr>
                 <th scope="col">№</th>
-                <!--<td scope="col"></td>-->
                 <th scope="col">Username</th>
                 <th scope="col">Date</th>
                 <th scope="col">Time</th>
-                <th scope="col">Timer</th>
                 <th scope="col">Status</th>
                 <th scope="col">Сourier</th>
                 <th scope="col">Payment details</th>
@@ -57,7 +53,6 @@
 
                 <td class="date-row">@order.ReceiptDate.ToShortDateString()</td>
                 <td class="time-row">@order.ReceiptDate.ToLongTimeString()</td>
-                <td class="timer-row"></td>
                 <td>@order.Status</td>
                 @if (order.CourierId.ToString() != Guid.Empty.ToString())
                 {

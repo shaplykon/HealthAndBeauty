@@ -7,26 +7,24 @@
 }
 
 @inject UserManager<IdentityUser> userManager;
-
-<h1>Courier orders</h1>
 <head>
-    <script src="~/js/orders-scripts/orders-scripts.js" type="text/javascript"></script>
+    <script src="~/js/orders-scripts/courier-orders-scripts.js" type="text/javascript"></script>
     <link rel="stylesheet" href="~/css/orders/orders.css" />
 </head>
+
 <body>
+    <h1>Your orders</h1>
     <table class="table table-sm table-hover">
         <thead>
             <tr>
-                <th scope="col">№</th>
-                <!--<td scope="col"></td>-->
+                <th scope="col">Id</th>
                 <th scope="col">Username</th>
                 <th scope="col">Date</th>
                 <th scope="col">Time</th>
-                <th scope="col">Timer</th>
                 <th scope="col">Status</th>
                 <th scope="col">Payment</th>
                 <th scope="col">Phone</th>
-
+                <th scope="col">Action</th>
             </tr>
         </thead>
 
@@ -35,14 +33,11 @@
             {
                 <tr>
                     <th scope="row" class="id">@order.Id</th>
-                    <!--<d class="ms">@order.ReceiptDate.Ticks</td>-->
-
                     <td>@userManager.FindByIdAsync(order.UserId.ToString()).Result.UserName</td>
 
                     <td class="date-row">@order.ReceiptDate.ToShortDateString()</td>
                     <td class="time-row">@order.ReceiptDate.ToLongTimeString()</td>
-                    <td class="timer-row"></td>
-                    <td>@order.Status</td>
+                    <td class="status">@order.Status</td>
                     @if (order.IsCash)
                     {
                         <td>Cash</td>
@@ -52,6 +47,7 @@
                         <td>Card</td>
                     }
                     <td>@order.PhoneNumber</td>
+                    <td><button class="btn btn-success" value="set" id="takeOrder" name="takeOrder">Set</button></td>
                 </tr>
 
             }
@@ -61,3 +57,4 @@
 
     </table>
 </body>
+

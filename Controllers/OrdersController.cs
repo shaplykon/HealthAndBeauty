@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.WebPages.Html;
 
@@ -70,6 +71,26 @@ namespace HealthAndBeauty.Controllers
                 SendAsync("Send", "You have been assigned a new order");
 
             return RedirectToAction("Index", "Orders");
+        }
+
+
+        [HttpPost]
+        [Route("Orders/TakeOrder/{orderId}")]
+        public async Task<ActionResult> TakeOrder(string orderId)
+        {
+            var courierId = userManager.GetUserId(User);
+            var order = ordersRepository.GetOrder(orderId);
+            var user = await userManager.FindByIdAsync(order.UserId.ToString());
+            var status = "Taken for delivery";
+
+            order.CourierId = Guid.Parse(courierId);
+            order.Status = status;
+            ordersRepository.UpdateOrder(order);
+
+            await notificationHub.Clients.Client(userConnectionManager.GetConnectionIdByName(user.UserName)).
+                SendAsync("Send", "Your order was taken for delivery!");
+
+            return Json(new { status = status});
         }
     }
 }
