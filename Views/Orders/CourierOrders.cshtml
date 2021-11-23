@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using System.Security.Claims;
+@using HealthAndBeauty.Helpers;
 
 @model HealthAndBeauty.Models.Order;
 @{
@@ -37,7 +38,7 @@
 
                     <td class="date-row">@order.ReceiptDate.ToShortDateString()</td>
                     <td class="time-row">@order.ReceiptDate.ToLongTimeString()</td>
-                    <td class="status">@order.Status</td>
+                    <td class="status" id="status-@order.Id">@order.Status</td>
                     @if (order.IsCash)
                     {
                         <td>Cash</td>
@@ -47,9 +48,15 @@
                         <td>Card</td>
                     }
                     <td>@order.PhoneNumber</td>
-                    <td><button class="btn btn-success" value="set" id="takeOrder" name="takeOrder">Set</button></td>
+                    @if (order.Status == Constants.WAIT_FOR_COUTIER_STATUS)
+                    {
+                        <td><button class="btn btn-success" value="set" id="set-@order.Id" name="takeOrder">Set</button></td>
+                    }
+                    else if (order.Status == Constants.IN_DELIVERY_STATUS)
+                    {
+                        <td><button class="btn btn-danger" value="set" id="delivery-@order.Id" name="deliverOrder">Delivered</button></td>
+                    }
                 </tr>
-
             }
         </tbody>
 

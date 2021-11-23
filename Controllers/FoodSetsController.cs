@@ -1,4 +1,5 @@
 ﻿using HealthAndBeauty.Data.Repositories;
+using HealthAndBeauty.Helpers;
 using HealthAndBeauty.Hubs;
 using HealthAndBeauty.Models;
 using HealthAndBeauty.Models.OrderModels;
@@ -231,13 +232,13 @@ namespace HealthAndBeauty.Controllers
                     Id = 0,
                     CourierId = Guid.Empty,
                     ReceiptDate = DateTime.Now,
-                    Status = orderViewModel.IsDelivery ? "Wait for courier" : "Ready",
+                    Status = orderViewModel.IsDelivery ? Constants.WAIT_FOR_COUTIER_STATUS : Constants.READY_STATUS,
                     UserId = userId,
                     IsCash = orderViewModel.IsCash,
                     IsDelivery = orderViewModel.IsDelivery,
                     Address = orderViewModel.IsDelivery ? orderViewModel.Address : orderViewModel.PickupAddress,
                     PhoneNumber = orderViewModel.PhoneNumber,
-                    CardNumber = orderViewModel.CardNumber.Substring(0, 4) + " **** " + orderViewModel.CardNumber.Substring(11, 4)
+                    CardNumber = !orderViewModel.IsCash ? orderViewModel.CardNumber.Substring(0, 4) + " **** " + orderViewModel.CardNumber.Substring(11, 4) : string.Empty
                 });
 
                 List<int> orderItemsIds = new List<int>();

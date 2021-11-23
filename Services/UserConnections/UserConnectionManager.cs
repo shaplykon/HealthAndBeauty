@@ -32,7 +32,9 @@ namespace HealthAndBeauty.Services.UserConnections
 
         public string GetConnectionIdByName(string username)
         {
-            return userConnections[username].Count > 0 ? userConnections[username][userConnections[username].Count - 1] : string.Empty;
+            if (userConnections.ContainsKey(username))
+                return userConnections[username].Count > 0 ? userConnections[username][userConnections[username].Count - 1] : string.Empty;
+            return string.Empty;
         }
     }
 }
