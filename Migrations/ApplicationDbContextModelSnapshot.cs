@@ -181,6 +181,9 @@ namespace HealthAndBeauty.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("CurrentStatus")
                         .HasColumnType("text");
 
@@ -273,28 +276,28 @@ namespace HealthAndBeauty.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "5cb6d600-491e-43ba-91bd-7eee0b67616b",
+                            ConcurrencyStamp = "ec1dd429-6625-4b2a-9ae9-7387ba49e519",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "f140aefa-4605-4ae6-b856-c30f62860b7a",
+                            ConcurrencyStamp = "0792b0e1-2724-48ff-a80f-1e07aa9754c5",
                             Name = "manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "6bb26152-3130-4607-9401-e3010a9b8fcf",
+                            ConcurrencyStamp = "4bfdc8d8-49c6-4f0d-99e0-a1bdee6f2e00",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "d2c73592-89df-4040-afb7-a6c9c499383e",
+                            ConcurrencyStamp = "6c681b98-222c-411b-b3a7-06ac16e8fc4b",
                             Name = "courier",
                             NormalizedName = "COURIER"
                         });

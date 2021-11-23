@@ -13,5 +13,6 @@ namespace HealthAndBeauty.Models.OrderModels
         public string CurrentStatus { get; set; }
         public Guid UserId { get; set; }
         public int OrderId { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

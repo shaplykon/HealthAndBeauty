@@ -20,8 +20,7 @@ namespace HealthAndBeauty.Data.Repositories
             return history.Id;
         }
 
-        internal List<History> GetHistoryByUserId(Guid userId) =>
-            context.History.Where(history => history.UserId == userId).ToList();
-
+        internal IEnumerable<History> GetHistoryByUserId(Guid userId) =>
+            context.History.Where(history => history.UserId == userId);
     }
 }

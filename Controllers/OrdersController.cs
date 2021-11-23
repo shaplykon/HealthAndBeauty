@@ -72,6 +72,14 @@ namespace HealthAndBeauty.Controllers
             order.Status = Constants.WAIT_FOR_COUTIER_STATUS;
             ordersRepository.UpdateOrder(order);
 
+            historyRepository.AddHistory(new History
+            {
+                CurrentStatus = Constants.WAIT_FOR_COUTIER_STATUS,
+                UserId = order.UserId,
+                OrderId = order.Id,
+                CreateDate = DateTime.Now
+            });
+
             await notificationHub.Clients.Client(userConnectionManager.GetConnectionIdByName(courier.UserName)).
                 SendAsync("Send", "You have been assigned a new order");
 
@@ -99,7 +107,8 @@ namespace HealthAndBeauty.Controllers
                 {
                     CurrentStatus = Constants.IN_DELIVERY_STATUS,
                     UserId = Guid.Parse(user.Id),
-                    OrderId = order.Id
+                    OrderId = order.Id,
+                    CreateDate = DateTime.Now
                 });
 
                 //await notificationHub.Clients.Client(userConnectionManager.GetConnectionIdByName(user.UserName)).
@@ -132,7 +141,8 @@ namespace HealthAndBeauty.Controllers
                 {
                     CurrentStatus = Constants.DELIVERED_STATUS,
                     UserId = Guid.Parse(user.Id),
-                    OrderId = order.Id
+                    OrderId = order.Id,
+                    CreateDate = DateTime.Now
                 });
                 return Json(new { status = Constants.DELIVERED_STATUS});
             }

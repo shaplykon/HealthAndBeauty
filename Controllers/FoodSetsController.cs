@@ -25,6 +25,7 @@ namespace HealthAndBeauty.Controllers
         private FoodSetsRepository _foodSetsRepository;
         private UserManager<IdentityUser> _userManager;
         private GoogleMapsRepository _googleMapsRepository;
+        public HistoryRepository _historyRepository;
         private IWebHostEnvironment _webHostEnvironment;
         private IHubContext<NotificationHub> _notificationHub;
         private ILogger<FoodSetsController> _logger;
@@ -32,6 +33,7 @@ namespace HealthAndBeauty.Controllers
 
         public FoodSetsController(FoodSetsRepository foodSetsRepository,
             OrdersRepository ordersRepository,
+            HistoryRepository historyRepository,
             UserManager<IdentityUser> userManager,
             GoogleMapsRepository googleMapsRepository,
             IWebHostEnvironment webHostEnvironment,
@@ -39,6 +41,7 @@ namespace HealthAndBeauty.Controllers
             IHubContext<NotificationHub> notificationHub,
             IMailService mailService)
         {
+            _historyRepository = historyRepository;
             _notificationHub = notificationHub;
             _webHostEnvironment = webHostEnvironment;
             _ordersRepository = ordersRepository;
@@ -239,6 +242,14 @@ namespace HealthAndBeauty.Controllers
                     Address = orderViewModel.IsDelivery ? orderViewModel.Address : orderViewModel.PickupAddress,
                     PhoneNumber = orderViewModel.PhoneNumber,
                     CardNumber = !orderViewModel.IsCash ? orderViewModel.CardNumber.Substring(0, 4) + " **** " + orderViewModel.CardNumber.Substring(11, 4) : string.Empty
+                });
+
+                _historyRepository.AddHistory(new History
+                {
+                    CurrentStatus = Constants.INITIAL_STATUS,
+                    UserId = userId,
+                    OrderId = orderId,
+                    CreateDate = DateTime.Now
                 });
 
                 List<int> orderItemsIds = new List<int>();
