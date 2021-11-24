@@ -10,8 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using System.Web.WebPages.Html;
 
 namespace HealthAndBeauty.Controllers
@@ -148,6 +150,33 @@ namespace HealthAndBeauty.Controllers
             }
 
             return Json(new { status = Constants.IN_DELIVERY_STATUS });
+        }
+
+        [Authorize(Roles = "admin, manager")]
+        public ActionResult Statistics()
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "admin, manager")]
+        public JsonResult GetStatistics()
+        {
+            List<object> chartObjects = new List<object>();
+            chartObjects.Add(new[] { "x", "Orders"});
+            var orders = ordersRepository.GetLastOrders().OrderBy(order => order.ReceiptDate).GroupBy(order => order.ReceiptDate.Date).Select(
+                group => new
+            {
+                Key = group.Key,
+                Count = group.Count()
+            });
+
+            foreach (var order in orders)
+            {
+                chartObjects.Add(new object[] {order.Key.Date.ToShortDateString(), order.Count });
+            }
+
+            return Json(chartObjects);
         }
 
     }

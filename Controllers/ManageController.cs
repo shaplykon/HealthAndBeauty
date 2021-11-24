@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace HealthAndBeauty.Controllers
             userManager = _userManager;
         }
 
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "admin, manager")]
+        [Authorize(Roles = "admin, manager")]
         [HttpGet]
         public IActionResult Index()
         {

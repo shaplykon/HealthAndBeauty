@@ -15,7 +15,7 @@ namespace HealthAndBeauty.Data.Repositories
             context = _context;
         }
 
-        internal List<Order> GetOrders() => 
+        internal IEnumerable<Order> GetOrders() => 
              context.Orders.ToList();
 
         internal List<Order> GetOrdersByCourierId(Guid courierId) =>
@@ -44,6 +44,10 @@ namespace HealthAndBeauty.Data.Repositories
 
         internal Order GetOrder(string orderId) => 
             context.Orders.Where(order => order.Id == int.Parse(orderId)).First();
-        
+
+        internal IEnumerable<Order> GetLastOrders()
+        {
+            return context.Orders.Where(order => order.ReceiptDate.Date <= DateTime.Now.Date && order.ReceiptDate >= DateTime.Now.AddDays(-5).Date);
+        }
     }
 }
