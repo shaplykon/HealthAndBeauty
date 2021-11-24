@@ -26,11 +26,12 @@ namespace HealthAndBeauty.Controllers
             GroupBy(history => history.OrderId).
             Select(group => new HistoryGroup{
                 Key = group.Key, 
-                History = group.ToList(),
+                History = group.OrderBy(group => group.CreateDate).ToList(),
                 Count = group.Count()}).
             ToList();;
 
-            ViewBag.OrdersHistory = ordersHistory;
+            ViewBag.ActiveOrdersHistory = ordersHistory.Where(order => order.History.Count < 4);
+            ViewBag.OrdersHistory = ordersHistory.Where(order => order.History.Count == 4);
             return View();
         }
     }
