@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace HealthAndBeauty.Controllers
         FoodSetsRepository foodSetsRepository;
         HistoryRepository historyRepository;
         UserManager<IdentityUser> userManager;
+        ILogger<OrdersController> logger;
         IHubContext<NotificationHub> notificationHub;
         readonly IUserConnectionManager userConnectionManager;
 
@@ -33,7 +35,8 @@ namespace HealthAndBeauty.Controllers
                     FoodSetsRepository _foodSetsRepository,
                     UserManager<IdentityUser> _userManager,
                     IHubContext<NotificationHub> _notificationHub,
-                    IUserConnectionManager _userConnectionManager)
+                    IUserConnectionManager _userConnectionManager,
+                    ILogger<OrdersController> _logger)
         { 
             foodSetsRepository = _foodSetsRepository;
             historyRepository = _historyRepository;
@@ -41,6 +44,7 @@ namespace HealthAndBeauty.Controllers
             notificationHub = _notificationHub;
             userManager = _userManager;
             ordersRepository = _ordersRepository;
+            logger = _logger;
         }
 
         [Authorize(Roles = "admin, manager")]
@@ -85,6 +89,8 @@ namespace HealthAndBeauty.Controllers
                 CreateDate = DateTime.Now
             });
 
+            logger.LogWarning($"Order with Id={orderId} was binded to courier with Id={courierId}");
+
             await notificationHub.Clients.Client(userConnectionManager.GetConnectionIdByName(courier.UserName)).
                 SendAsync("Send", "You have been assigned a new order");
 
@@ -115,16 +121,14 @@ namespace HealthAndBeauty.Controllers
                     OrderId = order.Id,
                     CreateDate = DateTime.Now
                 });
-
+                logger.LogInformation($"Courier with Id={courierId} take an order with Id={orderId}");
                 //await notificationHub.Clients.Client(userConnectionManager.GetConnectionIdByName(user.UserName)).
                 //    SendAsync("Send", "Your order was taken for delivery!").ConfigureAwait(false);
                 return Json(new { status = Constants.IN_DELIVERY_STATUS });
 
             }
             else
-            {
                 return Json(new { status = Constants.WAIT_FOR_COUTIER_STATUS });
-            }
            
         }
 
@@ -149,9 +153,9 @@ namespace HealthAndBeauty.Controllers
                     OrderId = order.Id,
                     CreateDate = DateTime.Now
                 });
+                logger.LogInformation($"An order with Id={orderId} was delivered");
                 return Json(new { status = Constants.DELIVERED_STATUS});
             }
-
             return Json(new { status = Constants.IN_DELIVERY_STATUS });
         }
 

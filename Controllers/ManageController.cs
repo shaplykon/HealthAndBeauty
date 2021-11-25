@@ -24,28 +24,36 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
+        [Route("Manage/GiveRole/{userId}/{role}")]
         [HttpPost]
-        public async Task<IActionResult> EditUserAsync(string action, string userId, string role)
+        public async Task<IActionResult> GiveRole(string userId, string role)
         {
             var user = userManager.Users.SingleOrDefault(u => u.Id == userId);
-            if (action.Equals("delete"))
-            {
-                var remFromRole = await userManager.RemoveFromRoleAsync(user, role);
-                await userManager.DeleteAsync(user);
-            }
-            if (action.Equals("edit"))
-            {
+            await userManager.RemoveFromRoleAsync(user, "user").ConfigureAwait(false);
+            await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
+            
+            return RedirectToAction("Index");
+        }
 
-                var remFromRole = await userManager.RemoveFromRoleAsync(user, role);
-                if (role.Equals("user"))
-                {
-                    await userManager.AddToRoleAsync(user, "manager");
-                }
-                if (role.Equals("manager"))
-                {
-                    await userManager.AddToRoleAsync(user, "user");
-                }
-            }
+        [Route("Manage/DepriveRole/{userId}/{role}")]
+        [HttpPost]
+        public async Task<IActionResult> DepriveRole(string userId, string role)
+        {
+            var user = userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+            await userManager.RemoveFromRoleAsync(user, role);
+            await userManager.AddToRoleAsync(user, "user");
+
+            return RedirectToAction("Index");
+        }
+
+        [Route("Manage/DeleteUser/{userId}/{role}")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+            await userManager.DeleteAsync(user);
             return RedirectToAction("Index");
         }
     }

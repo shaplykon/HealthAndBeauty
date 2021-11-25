@@ -84,7 +84,7 @@ namespace HealthAndBeauty.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation($"User {Input.Email} logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -99,6 +99,7 @@ namespace HealthAndBeauty.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    _logger.LogInformation($"Invalid login attempt for user {Input.Email}");
                     return Page();
                 }
             }
