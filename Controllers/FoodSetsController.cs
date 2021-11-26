@@ -274,7 +274,15 @@ namespace HealthAndBeauty.Controllers
 
                     await _notificationHub.Clients.Group("Managers").SendAsync("Send", $"New order with ID {orderId} was added!");
                     var contentRootPath = HttpContext.Request.Scheme + "://" + Request.Host + "/images/foodSets/";
-                    await _mailService.SendConfirmationMessage(User.Identity.Name, foodSets, contentRootPath);
+                    try
+                    {
+                        await _mailService.SendConfirmationMessage(User.Identity.Name, foodSets, contentRootPath);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                 }
                 return RedirectToAction("ShoppingCart");
             }

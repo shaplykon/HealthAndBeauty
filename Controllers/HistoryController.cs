@@ -1,11 +1,10 @@
 ﻿using HealthAndBeauty.Data.Repositories;
 using HealthAndBeauty.Models.OrderModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthAndBeauty.Controllers
 {
@@ -20,6 +19,7 @@ namespace HealthAndBeauty.Controllers
             userManager = _userManager;
             historyRepository = _historyRepository;
         }
+        [Authorize]
         public IActionResult Index()
         {
             var ordersHistory = historyRepository.GetHistoryByUserId(Guid.Parse(userManager.GetUserId(User))).AsEnumerable().

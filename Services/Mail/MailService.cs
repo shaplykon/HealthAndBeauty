@@ -50,11 +50,14 @@ namespace HealthAndBeauty.Services.Mail
             {
                 totalPrice += set.Price;
                 message += $"<li>{set.Name} ({set.Price}$, {set.Calorific} kkal)</li>";
+                message += $"<img src=\"{contentPath + set.ImageData}\" style=\"width: 20%;\"></img>";
 
             }
             message += "</ol>";
             message += $"<p>Total price is {totalPrice}$</p>";
-            message += "<p>Order date: " + DateTime.Now;
+            message += $"<p>Order date: {DateTime.Now}</p>";
+            message += "<p>Scan QR code to check your orders:</p><br></br>";
+            message += "<img src=\"http://chart.apis.google.com/chart?choe=UTF-8&chld=H&cht=qr&chs=100x100&chl=https://healthandbeauty.azurewebsites.net/History\"/>";
             return message;
         }
 
