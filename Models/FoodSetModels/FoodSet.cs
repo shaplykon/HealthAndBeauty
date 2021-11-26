@@ -23,5 +23,6 @@ namespace HealthAndBeauty.Models
         public int Calorific { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
         public string ImageData { get; set; }
+        public bool IsActive { get; set; }
     }
 }

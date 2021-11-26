@@ -21,6 +21,7 @@ namespace HealthAndBeauty.Controllers
     public class OrdersController : Controller
     {
         OrdersRepository ordersRepository;
+        FoodSetsRepository foodSetsRepository;
         HistoryRepository historyRepository;
         UserManager<IdentityUser> userManager;
         IHubContext<NotificationHub> notificationHub;
@@ -29,10 +30,12 @@ namespace HealthAndBeauty.Controllers
         public OrdersController(
                     HistoryRepository _historyRepository,
                     OrdersRepository _ordersRepository,
+                    FoodSetsRepository _foodSetsRepository,
                     UserManager<IdentityUser> _userManager,
                     IHubContext<NotificationHub> _notificationHub,
                     IUserConnectionManager _userConnectionManager)
-        {
+        { 
+            foodSetsRepository = _foodSetsRepository;
             historyRepository = _historyRepository;
             userConnectionManager = _userConnectionManager;
             notificationHub = _notificationHub;
@@ -158,13 +161,14 @@ namespace HealthAndBeauty.Controllers
             return View();
         }
 
-
+        [HttpGet]
+        [Route("Orders/GetOrdersAmountStatistics/{period:int}")]
         [Authorize(Roles = "admin, manager")]
-        public JsonResult GetStatistics()
+        public JsonResult GetOrdersAmountStatistics(int period)
         {
             List<object> chartObjects = new List<object>();
             chartObjects.Add(new[] { "x", "Orders"});
-            var orders = ordersRepository.GetLastOrders().OrderBy(order => order.ReceiptDate).GroupBy(order => order.ReceiptDate.Date).Select(
+            var orders = ordersRepository.GetLastOrders(period).OrderBy(order => order.ReceiptDate).GroupBy(order => order.ReceiptDate.Date).Select(
                 group => new
             {
                 Key = group.Key,
@@ -174,6 +178,34 @@ namespace HealthAndBeauty.Controllers
             foreach (var order in orders)
             {
                 chartObjects.Add(new object[] {order.Key.Date.ToShortDateString(), order.Count });
+            }
+
+            return Json(chartObjects);
+        }
+
+        [HttpGet]
+        [Route("Orders/GetOrdersStatistics/{period:int}")]
+        [Authorize(Roles = "admin, manager")]
+        public JsonResult GetOrdersStatistics(int period)
+        {
+            List<object> chartObjects = new List<object>();
+            chartObjects.Add(new[] { "x", "Orders" });
+            var lastOrdersIds = ordersRepository.GetLastOrders(period).Select(order => order.Id).ToList();
+            var orderItems = ordersRepository.GetOrderItems().ToList();
+            var actualOrderItems = orderItems.Where(orderItem => lastOrdersIds.Contains(orderItem.OrderId)).ToList();
+
+            var orders = actualOrderItems.GroupBy(order => order.FoodSetId).Select(
+                group => new
+                {
+                    Key = group.Key,
+                    Count = group.Count()
+                });
+
+            var foodSets = foodSetsRepository.GetFoodSetsList();
+
+            foreach (var order in orders)
+            {
+                chartObjects.Add(new object[] { foodSets.Where(set => set.Id == order.Key).FirstOrDefault().Name, order.Count });
             }
 
             return Json(chartObjects);

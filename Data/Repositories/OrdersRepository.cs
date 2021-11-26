@@ -45,9 +45,10 @@ namespace HealthAndBeauty.Data.Repositories
         internal Order GetOrder(string orderId) => 
             context.Orders.Where(order => order.Id == int.Parse(orderId)).First();
 
-        internal IEnumerable<Order> GetLastOrders()
-        {
-            return context.Orders.Where(order => order.ReceiptDate.Date <= DateTime.Now.Date && order.ReceiptDate >= DateTime.Now.AddDays(-5).Date);
-        }
+        internal IEnumerable<Order> GetLastOrders(int period) => 
+            context.Orders.Where(order => order.ReceiptDate.Date <= DateTime.Now.Date && order.ReceiptDate >= DateTime.Now.AddDays(-period).Date);
+
+        internal IEnumerable<OrderItem> GetOrderItems() =>
+            context.OrderItems;
     }
 }

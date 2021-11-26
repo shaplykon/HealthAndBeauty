@@ -43,7 +43,7 @@ namespace HealthAndBeauty.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.FoodSets = _foodSetsRepository.GetFoodSetsList();
+            ViewBag.FoodSets = _foodSetsRepository.GetActiveFoodSetsList();
             return View();
         }
 

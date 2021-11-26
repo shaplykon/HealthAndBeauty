@@ -15,11 +15,10 @@ namespace HealthAndBeauty.Data.Repositories
             context = _context;
         }
 
-        public List<FoodSet> GetFoodSetsList()
-        {
-            List<FoodSet> foodSets = context.FoodSets.Include(foodSet => foodSet.Ingredients).ToList();
-            return foodSets;
-        }
+        public List<FoodSet> GetActiveFoodSetsList() => 
+            context.FoodSets.Where(foodSet => foodSet.IsActive == true).Include(foodSet => foodSet.Ingredients).ToList();
+
+        public List<FoodSet> GetFoodSetsList() => context.FoodSets.ToList();
 
         public void AddFoodSet(FoodSet foodSet)
         {
@@ -27,23 +26,14 @@ namespace HealthAndBeauty.Data.Repositories
             context.SaveChanges();
         }
 
-        internal FoodSet GetFoodSetsById(int id)
-        {
-            var foodSet = context.FoodSets.Where(set => set.Id == id).Include(foodSet => foodSet.Ingredients).FirstOrDefault();
-            return foodSet;
-        }
-
+        internal FoodSet GetFoodSetsById(int id) => context.FoodSets.Where(set => set.Id == id).Include(foodSet => foodSet.Ingredients).FirstOrDefault();
         internal bool IsInShoppingCart(Guid userId, int id)
         {
             IQueryable<ShoppingCart> shoppingCartItem = context.ShoppingCarts.Where(x => x.FoodSetId == id && x.UserId == userId);
             return shoppingCartItem.Count() != 0;
         }
 
-        internal List<Comment> GetCommentBySetId(int setId)
-        {
-            var commentsList = context.Comments.Where(comment => comment.FoodSetId == setId).ToList();
-            return commentsList;
-        }
+        internal List<Comment> GetCommentBySetId(int setId) => context.Comments.Where(comment => comment.FoodSetId == setId).ToList();
 
         internal void AddComment(Comment comment, int foodSetId)
         { 
@@ -70,14 +60,13 @@ namespace HealthAndBeauty.Data.Repositories
             context.SaveChanges();
         }
 
-        internal List<ShoppingCart> GetShoppingCartByUserId(Guid userId)
-        {
-            return context.ShoppingCarts.Where(cart => cart.UserId == userId).ToList();
-        }
+        internal List<ShoppingCart> GetShoppingCartByUserId(Guid userId) => context.ShoppingCarts.Where(cart => cart.UserId == userId).ToList();
 
         internal void DeleteFoodSetById(int Id)
         {
-            context.FoodSets.Remove(context.FoodSets.Where(foodSet => foodSet.Id == Id).FirstOrDefault());
+            var foodSet = context.FoodSets.Where(foodSet => foodSet.Id == Id).FirstOrDefault();
+            foodSet.IsActive = false;
+            context.FoodSets.Update(foodSet);
             context.SaveChanges();
         }
 

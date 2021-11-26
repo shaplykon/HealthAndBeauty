@@ -1,37 +1,42 @@
-﻿<div class="container" style="display:flex;">
-    <div class="row">
-        <div id="chart1"></div>
+﻿<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="~/js/orders-scripts/statistics-scripts.js"></script>
+</head>
+
+<body>
+
+    <label for="Sortby">Select statistics period:</label>
+    @Html.DropDownList("Sortby", 
+        new SelectListItem[]
+        {
+            new SelectListItem() { Text = "2 days", Value = "2" },
+            new SelectListItem() { Text = "3 days", Value = "3" },
+            new SelectListItem() { Text = "5 days", Value = "5" },
+            new SelectListItem() { Text = "6 days", Value = "6" },
+            new SelectListItem() { Text = "10 days", Value = "10" },
+            new SelectListItem() { Text = "15 days", Value = "15", Selected = true },
+            new SelectListItem() { Text = "20 days", Value = "15", Selected = true },
+            new SelectListItem() { Text = "30 days", Value = "15", Selected = true },
+        },
+        new
+        {
+            @onchange = "displayChartsWithPeriod(this.value)",
+            @class = "form-control",
+            @style = "width: 20% !important"
+        })
+
+
+    <div class="container" style="display:flex;">
+
+        <div class="row">
+            <div id="ordersAmountChart"></div>
+        </div>
+
+        <div class="row">
+            <div id="ordersChart"></div>
+        </div>
     </div>
+</body>
 
-    <div class="row">
-        <div id="chart2"></div>
-    </div>
 
-</div>
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-        $.ajax({
-            url: '/Orders/GetStatistics',
-            type: 'GET',
-            success: function (jsonData) {
-                var data = google.visualization.arrayToDataTable(jsonData, false);
-                var option = {
-                    title: "Line Chart",
-                    width: 600,
-                    height: 600
-                };
-                var chart = new google.visualization.LineChart(document.getElementById('chart1'));
-                chart.draw(data, option);
-
-                chart = new google.visualization.PieChart(document.getElementById('chart2'));
-                chart.draw(data, option);
-            }
-        });
-
-    }
-</script>
