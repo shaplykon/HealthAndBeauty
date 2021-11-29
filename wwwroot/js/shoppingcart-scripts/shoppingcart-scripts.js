@@ -3,6 +3,41 @@ var directionsService;
 var directionsRenderer;
 
 window.onload = () => {
+    var cardOld = "";
+    var cvvOld = "";
+
+    document.getElementById("cardNumber").addEventListener('input', validateCard);
+    document.getElementById("cvv").addEventListener('input', validateCvv);
+
+    function validateCard(event) {
+        var input = event.target;
+        if (validateInputCard(input.value)) {
+            cardOld = input.value;
+        }
+        else {
+            input.value = cardOld;
+        }
+    }
+
+
+    function validateCvv(event) {
+        var cvvInput = event.target;
+        if (validateInputCvv(cvvInput.value)) {
+            cvvOld = cvvInput.value;
+        }
+        else {
+            cvvInput.value = cvvOld;
+        }
+    }
+
+    function validateInputCvv(str) {
+        return /^[0-9]{0,3}$/.test(str);
+    }
+
+    function validateInputCard(str) {
+        return /^[0-9]{0,16}$/.test(str);
+    }
+    
     showDeliveryForm();
     document.querySelectorAll('input[type="radio"]').forEach((elem) => {
         elem.addEventListener("change", function (event) {
